@@ -201,7 +201,11 @@ button:disabled {
 
 .stone.white {
   background: #f4f4f4;
-  border: 1px solid #b7b7b7;
+  border: 1px solid #000;
+}
+
+.stone.ghost {
+  opacity: 0.45;
 }
 
 .highlight-label {

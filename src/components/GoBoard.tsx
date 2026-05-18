@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { BoardHighlight, Stone, StoneColor } from "../types";
 
 type GoBoardProps = {
@@ -40,10 +41,27 @@ export function GoBoard({
   highlights = [],
   title,
 }: GoBoardProps) {
+  const flipStateRef = useRef<Map<string, boolean>>(new Map());
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+
   const stoneMap = new Map<string, Stone>();
   for (const stone of stones) {
     stoneMap.set(keyFromXY(stone.x, stone.y), stone);
   }
+
+  useEffect(() => {
+    const existing = new Set(stones.map((stone) => keyFromXY(stone.x, stone.y)));
+    for (const key of Array.from(flipStateRef.current.keys())) {
+      if (!existing.has(key)) {
+        flipStateRef.current.delete(key);
+      }
+    }
+    for (const key of existing) {
+      if (!flipStateRef.current.has(key)) {
+        flipStateRef.current.set(key, false);
+      }
+    }
+  }, [stones]);
 
   const highlightMap = new Map<string, BoardHighlight>();
   for (const highlight of highlights) {
@@ -55,17 +73,26 @@ export function GoBoard({
       return;
     }
     const idx = stones.findIndex((stone) => stone.x === x && stone.y === y);
+    const coordKey = keyFromXY(x, y);
     if (idx === -1) {
+      flipStateRef.current.set(coordKey, false);
       onChange([...stones, { x, y, color: selectedColor }]);
       return;
     }
+
     const existing = stones[idx];
-    if (existing.color === "black") {
+    const wasFlipped = flipStateRef.current.get(coordKey) ?? false;
+    if (!wasFlipped) {
       const next = [...stones];
-      next[idx] = { ...existing, color: "white" };
+      next[idx] = {
+        ...existing,
+        color: existing.color === "black" ? "white" : "black",
+      };
+      flipStateRef.current.set(coordKey, true);
       onChange(next);
       return;
     }
+    flipStateRef.current.delete(coordKey);
     onChange(stones.filter((_, index) => index !== idx));
   }
 
@@ -89,10 +116,23 @@ export function GoBoard({
           type="button"
           className={className}
           onClick={() => updateAt(x, y)}
+          onMouseEnter={() => {
+            if (editable) {
+              setHoveredKey(key);
+            }
+          }}
+          onMouseLeave={() => {
+            if (editable) {
+              setHoveredKey((current) => (current === key ? null : current));
+            }
+          }}
           disabled={!editable}
           aria-label={`Intersection ${String.fromCharCode(65 + x)}${size - y}`}
         >
           {stone ? <span className={stoneClass(stone.color)} /> : null}
+          {!stone && editable && hoveredKey === key ? (
+            <span className={`${stoneClass(selectedColor)} ghost`} />
+          ) : null}
           {highlight ? <span className="highlight-label">{highlight.label}</span> : null}
         </button>,
       );
