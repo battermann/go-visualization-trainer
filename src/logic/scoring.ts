@@ -4,9 +4,10 @@ function keyOf(stone: Pick<Stone, "x" | "y">): string {
   return `${stone.x},${stone.y}`;
 }
 
-function toCoordLabel(stone: Pick<Stone, "x" | "y">): string {
+function toCoordLabel(stone: Pick<Stone, "x" | "y">, boardSize = 9): string {
   const col = String.fromCharCode(65 + stone.x);
-  return `${col}${stone.y + 1}`;
+  const row = boardSize - stone.y;
+  return `${col}${row}`;
 }
 
 function manhattanDistance(a: Stone, b: Stone): number {

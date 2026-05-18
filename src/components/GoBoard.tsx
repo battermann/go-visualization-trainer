@@ -90,7 +90,7 @@ export function GoBoard({
           className={className}
           onClick={() => updateAt(x, y)}
           disabled={!editable}
-          aria-label={`Intersection ${String.fromCharCode(65 + x)}${y + 1}`}
+          aria-label={`Intersection ${String.fromCharCode(65 + x)}${size - y}`}
         >
           {stone ? <span className={stoneClass(stone.color)} /> : null}
           {highlight ? <span className="highlight-label">{highlight.label}</span> : null}
