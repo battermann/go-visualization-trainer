@@ -17,7 +17,11 @@ export function LevelOverview({ level, onStartTraining, onBack }: LevelOverviewP
       <p>Approximate rank: {level.rank}</p>
       <p>Problems: {level.problems.length}</p>
       <p>Time limit: {level.timeLimitMinutes} minutes</p>
-      <p>Level up if total mistakes are below {level.levelUpBelow}.</p>
+      <p>
+        {level.level === 10
+          ? "Level up threshold: perfect score (0 mistakes)."
+          : `Level up if total mistakes are below ${level.levelUpBelow}.`}
+      </p>
       <p>
         {level.levelDownAbove === null
           ? "No level-down threshold."

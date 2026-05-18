@@ -44,6 +44,17 @@ function buildSession(levelConfig: LevelConfig): TrainingSession {
 }
 
 function getRecommendation(levelConfig: LevelConfig, totalMistakes: number): number {
+  if (levelConfig.level === 10) {
+    if (
+      levelConfig.levelDownAbove !== null &&
+      totalMistakes > levelConfig.levelDownAbove
+    ) {
+      return 9;
+    }
+    // Level 10 has no higher level; 0 mistakes is handled as a perfect pass/streak.
+    return 10;
+  }
+
   if (totalMistakes < levelConfig.levelUpBelow) {
     return Math.min(10, levelConfig.level + 1);
   }

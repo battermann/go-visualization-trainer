@@ -17,7 +17,7 @@ function makeDummyProblem(level: number): Problem[] {
 export const LEVELS: LevelConfig[] = [
   {
     level: 1,
-    rank: "30-20 Kyu",
+    rank: "30-20 kyu",
     timeLimitMinutes: 10,
     levelUpBelow: 5,
     levelDownAbove: null,
@@ -145,15 +145,162 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 2,
-    rank: "20-11 Kyu",
+    rank: "20-11 kyu",
     timeLimitMinutes: 15,
     levelUpBelow: 10,
     levelDownAbove: 20,
-    problems: makeDummyProblem(2),
+    problems: [
+      {
+        id: "level-2-problem-1",
+        boardSize: 9,
+        stones: [
+          // l2 p1: b D6, w E4, b G6
+          { x: 3, y: 3, color: "black" },
+          { x: 4, y: 5, color: "white" },
+          { x: 6, y: 3, color: "black" },
+        ],
+      },
+      {
+        id: "level-2-problem-2",
+        boardSize: 9,
+        stones: [
+          // l2 p2: b B2, b D6, w G8
+          { x: 1, y: 7, color: "black" },
+          { x: 3, y: 3, color: "black" },
+          { x: 6, y: 1, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-3",
+        boardSize: 9,
+        stones: [
+          // l2 p3: w B1, b C1, b E4, w I8
+          { x: 1, y: 8, color: "white" },
+          { x: 2, y: 8, color: "black" },
+          { x: 4, y: 5, color: "black" },
+          { x: 8, y: 1, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-4",
+        boardSize: 9,
+        stones: [
+          // l2 p4: b C6, w D4, b F7, w G4
+          { x: 2, y: 3, color: "black" },
+          { x: 3, y: 5, color: "white" },
+          { x: 5, y: 2, color: "black" },
+          { x: 6, y: 5, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-5",
+        boardSize: 9,
+        stones: [
+          // l2 p5: w C5, b D4, b E7, w F4, b G7
+          { x: 2, y: 4, color: "white" },
+          { x: 3, y: 5, color: "black" },
+          { x: 4, y: 2, color: "black" },
+          { x: 5, y: 5, color: "white" },
+          { x: 6, y: 2, color: "black" },
+        ],
+      },
+      {
+        id: "level-2-problem-6",
+        boardSize: 9,
+        stones: [
+          // l2 p6: w C3, b C7, w D8, b E5, b F7
+          { x: 2, y: 6, color: "white" },
+          { x: 2, y: 2, color: "black" },
+          { x: 3, y: 1, color: "white" },
+          { x: 4, y: 4, color: "black" },
+          { x: 5, y: 2, color: "black" },
+        ],
+      },
+      {
+        id: "level-2-problem-7",
+        boardSize: 9,
+        stones: [
+          // l2 p7: b C3, b E3, b E6, w G6, w G7
+          { x: 2, y: 6, color: "black" },
+          { x: 4, y: 6, color: "black" },
+          { x: 4, y: 3, color: "black" },
+          { x: 6, y: 3, color: "white" },
+          { x: 6, y: 2, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-8",
+        boardSize: 9,
+        stones: [
+          // l2 p8: b B7, b C4, w D3, b D7, w F6, w G4
+          { x: 1, y: 2, color: "black" },
+          { x: 2, y: 5, color: "black" },
+          { x: 3, y: 6, color: "white" },
+          { x: 3, y: 2, color: "black" },
+          { x: 5, y: 3, color: "white" },
+          { x: 6, y: 5, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-9",
+        boardSize: 9,
+        stones: [
+          // l2 p9: b B1, b B3, w C6, w C9, b G2, w I8
+          { x: 1, y: 8, color: "black" },
+          { x: 1, y: 6, color: "black" },
+          { x: 2, y: 3, color: "white" },
+          { x: 2, y: 0, color: "white" },
+          { x: 6, y: 7, color: "black" },
+          { x: 8, y: 1, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-10",
+        boardSize: 9,
+        stones: [
+          // l2 p10: b B2, w C8, b D2, w E5, b F5, w G5
+          { x: 1, y: 7, color: "black" },
+          { x: 2, y: 1, color: "white" },
+          { x: 3, y: 7, color: "black" },
+          { x: 4, y: 4, color: "white" },
+          { x: 5, y: 4, color: "black" },
+          { x: 6, y: 4, color: "white" },
+        ],
+      },
+      {
+        id: "level-2-problem-11",
+        boardSize: 9,
+        stones: [
+          // l2 p11: b A6, w B4, b C3, w D6, w E2, b E4, b H3
+          { x: 0, y: 3, color: "black" },
+          { x: 1, y: 5, color: "white" },
+          { x: 2, y: 6, color: "black" },
+          { x: 3, y: 3, color: "white" },
+          { x: 4, y: 7, color: "white" },
+          { x: 4, y: 5, color: "black" },
+          { x: 7, y: 6, color: "black" },
+        ],
+      },
+      {
+        id: "level-2-problem-12",
+        boardSize: 9,
+        stones: [
+          // l2 p12: b A8, w B3, w D1, w D4, b E6, b E7, w F3, w G5
+          { x: 0, y: 1, color: "black" },
+          { x: 1, y: 6, color: "white" },
+          { x: 3, y: 8, color: "white" },
+          { x: 3, y: 5, color: "white" },
+          { x: 4, y: 3, color: "black" },
+          { x: 4, y: 2, color: "black" },
+          { x: 5, y: 6, color: "white" },
+          { x: 6, y: 4, color: "white" },
+        ],
+      },
+    ],
   },
   {
     level: 3,
-    rank: "15-7 Kyu",
+    rank: "15-7 kyu",
     timeLimitMinutes: 20,
     levelUpBelow: 15,
     levelDownAbove: 30,
@@ -161,7 +308,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 4,
-    rank: "10-3 Kyu",
+    rank: "10-3 kyu",
     timeLimitMinutes: 25,
     levelUpBelow: 20,
     levelDownAbove: 40,
@@ -169,7 +316,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 5,
-    rank: "6-1 Kyu",
+    rank: "6-1 kyu",
     timeLimitMinutes: 30,
     levelUpBelow: 25,
     levelDownAbove: 50,
@@ -177,7 +324,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 6,
-    rank: "3 Kyu - 2 Dan",
+    rank: "3 kyu-2 dan",
     timeLimitMinutes: 35,
     levelUpBelow: 30,
     levelDownAbove: 60,
@@ -185,7 +332,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 7,
-    rank: "1-4 Dan",
+    rank: "1-4 dan",
     timeLimitMinutes: 45,
     levelUpBelow: 35,
     levelDownAbove: 70,
@@ -193,7 +340,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 8,
-    rank: "3-5 Dan",
+    rank: "3-5 dan",
     timeLimitMinutes: 50,
     levelUpBelow: 40,
     levelDownAbove: 80,
@@ -201,7 +348,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 9,
-    rank: "4-6 Dan",
+    rank: "4-6 dan",
     timeLimitMinutes: 55,
     levelUpBelow: 40,
     levelDownAbove: 90,
@@ -209,7 +356,7 @@ export const LEVELS: LevelConfig[] = [
   },
   {
     level: 10,
-    rank: "6+ Dan",
+    rank: "6+ dan",
     timeLimitMinutes: 60,
     levelUpBelow: 0,
     levelDownAbove: 100,

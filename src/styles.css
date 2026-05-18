@@ -145,7 +145,7 @@ button:disabled {
   display: grid;
   background: #d7a864;
   border: 2.5px solid #6b4d2b;
-  padding: 8px;
+  padding: 0;
   overflow: hidden;
   margin-bottom: 12px;
 }
@@ -170,9 +170,13 @@ button:disabled {
 }
 
 .board-cell {
+  appearance: none;
+  -webkit-appearance: none;
   position: relative;
   z-index: 1;
   border: none;
+  border-radius: 0;
+  margin: 0;
   padding: 0;
   background: transparent;
 }
