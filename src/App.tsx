@@ -386,11 +386,6 @@ export default function App() {
         <section className="panel pause-panel">
           <h1>Close your eyes</h1>
           <p className="pause-count">{pauseCountdown}</p>
-          <div className="button-row pause-actions">
-            <button type="button" onClick={backHome}>
-              &lt; Home
-            </button>
-          </div>
         </section>
       ) : null}
 
