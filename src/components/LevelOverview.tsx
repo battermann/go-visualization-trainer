@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaEye, FaEyeSlash, FaHome, FaPlay } from "react-icons/fa";
 import { LevelConfig } from "../types";
 import { GoBoard } from "./GoBoard";
 
@@ -29,14 +30,21 @@ export function LevelOverview({ level, onStartTraining, onBack }: LevelOverviewP
       </p>
 
       <div className="button-row">
-        <button type="button" className="primary" onClick={onStartTraining}>
+        <button type="button" className="primary btn-with-icon" onClick={onStartTraining}>
+          <FaPlay aria-hidden="true" />
           Start training
         </button>
-        <button type="button" onClick={() => setShowAllBoards((current) => !current)}>
+        <button
+          type="button"
+          className="btn-with-icon"
+          onClick={() => setShowAllBoards((current) => !current)}
+        >
+          {showAllBoards ? <FaEyeSlash aria-hidden="true" /> : <FaEye aria-hidden="true" />}
           {showAllBoards ? "Hide all boards" : "Show all boards"}
         </button>
-        <button type="button" onClick={onBack}>
-          &lt; Home
+        <button type="button" className="btn-with-icon" onClick={onBack}>
+          <FaHome aria-hidden="true" />
+          Home
         </button>
       </div>
 

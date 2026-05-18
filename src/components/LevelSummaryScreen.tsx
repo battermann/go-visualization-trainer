@@ -1,5 +1,6 @@
 import { LevelConfig } from "../types";
 import { Timer } from "./Timer";
+import { FaArrowRight, FaHome, FaListUl, FaRedoAlt } from "react-icons/fa";
 
 type LevelSummaryScreenProps = {
   level: LevelConfig;
@@ -55,17 +56,21 @@ export function LevelSummaryScreen({
       ) : null}
 
       <div className="button-row wrap">
-        <button type="button" onClick={onRetry}>
+        <button type="button" className="btn-with-icon" onClick={onRetry}>
+          <FaRedoAlt aria-hidden="true" />
           Retry same level
         </button>
-        <button type="button" className="primary" onClick={onGoRecommended}>
+        <button type="button" className="primary btn-with-icon" onClick={onGoRecommended}>
+          <FaArrowRight aria-hidden="true" />
           Go to recommended level
         </button>
-        <button type="button" onClick={onChooseAnother}>
+        <button type="button" className="btn-with-icon" onClick={onChooseAnother}>
+          <FaListUl aria-hidden="true" />
           Choose another level
         </button>
-        <button type="button" onClick={onBackHome}>
-          &lt; Home
+        <button type="button" className="btn-with-icon" onClick={onBackHome}>
+          <FaHome aria-hidden="true" />
+          Home
         </button>
       </div>
     </section>

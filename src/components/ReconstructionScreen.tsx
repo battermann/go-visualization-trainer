@@ -1,6 +1,7 @@
 import { Stone, StoneColor } from "../types";
 import { GoBoard } from "./GoBoard";
 import { Timer } from "./Timer";
+import { FaCheck, FaEraser, FaHome, FaUndoAlt } from "react-icons/fa";
 
 type ReconstructionScreenProps = {
   boardSize: number;
@@ -70,17 +71,21 @@ export function ReconstructionScreen({
       />
 
       <div className="button-row">
-        <button type="button" onClick={onUndo}>
+        <button type="button" className="btn-with-icon" onClick={onUndo}>
+          <FaUndoAlt aria-hidden="true" />
           Undo
         </button>
-        <button type="button" onClick={onClear}>
+        <button type="button" className="btn-with-icon" onClick={onClear}>
+          <FaEraser aria-hidden="true" />
           Clear board
         </button>
-        <button type="button" className="primary" onClick={onSubmit}>
+        <button type="button" className="primary btn-with-icon" onClick={onSubmit}>
+          <FaCheck aria-hidden="true" />
           Submit
         </button>
-        <button type="button" onClick={onBackHome}>
-          &lt; Home
+        <button type="button" className="btn-with-icon" onClick={onBackHome}>
+          <FaHome aria-hidden="true" />
+          Home
         </button>
       </div>
     </section>

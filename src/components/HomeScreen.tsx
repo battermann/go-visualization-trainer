@@ -1,4 +1,5 @@
 import { RANK_OPTIONS } from "../data/levels";
+import { FaPlay } from "react-icons/fa";
 
 type HomeScreenProps = {
   selectedRank: string;
@@ -63,7 +64,8 @@ export function HomeScreen({
         </select>
       </div>
 
-      <button type="button" onClick={onStart} className="primary">
+      <button type="button" onClick={onStart} className="primary btn-with-icon">
+        <FaPlay aria-hidden="true" />
         Start
       </button>
 

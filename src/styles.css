@@ -73,6 +73,12 @@ button:disabled {
   cursor: default;
 }
 
+.btn-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .primary {
   background: #3f78b3;
   border-color: #346696;
