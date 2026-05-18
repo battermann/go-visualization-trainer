@@ -10,10 +10,8 @@ import { getRecommendedStartLevel } from "./logic/rankMapping";
 import { runScoringSelfCheck, scoreProblem } from "./logic/scoring";
 import {
   appendSession,
-  hasConsecutivePerfectDays,
   loadProgress,
   saveProgress,
-  updateLevel10Streak,
 } from "./logic/storage";
 import { AppState, AppProgress, LevelConfig, Problem, TrainingSession } from "./types";
 
@@ -44,19 +42,10 @@ function buildSession(levelConfig: LevelConfig): TrainingSession {
 }
 
 function getRecommendation(levelConfig: LevelConfig, totalMistakes: number): number {
-  if (levelConfig.level === 10) {
-    if (
-      levelConfig.levelDownAbove !== null &&
-      totalMistakes > levelConfig.levelDownAbove
-    ) {
-      return 9;
-    }
-    // Level 10 has no higher level; 0 mistakes is handled as a perfect pass/streak.
-    return 10;
-  }
+  const maxLevel = LEVELS[LEVELS.length - 1]?.level ?? levelConfig.level;
 
   if (totalMistakes < levelConfig.levelUpBelow) {
-    return Math.min(10, levelConfig.level + 1);
+    return Math.min(maxLevel, levelConfig.level + 1);
   }
   if (
     levelConfig.levelDownAbove !== null &&
@@ -85,14 +74,16 @@ export default function App() {
     initialProgress.lastSelectedRank ?? "15 kyu",
   );
   const [selectedLevel, setSelectedLevel] = useState<number>(
-    initialProgress.lastSelectedLevel ?? getRecommendedStartLevel("15 kyu"),
+    initialProgress.lastSelectedLevel &&
+      LEVELS.some((entry) => entry.level === initialProgress.lastSelectedLevel)
+      ? initialProgress.lastSelectedLevel
+      : getRecommendedStartLevel("15 kyu"),
   );
   const [session, setSession] = useState<TrainingSession | null>(null);
   const [selectedStoneColor, setSelectedStoneColor] = useState<"black" | "white">("black");
   const [pauseCountdown, setPauseCountdown] = useState(3);
   const [lastResultIndex, setLastResultIndex] = useState<number | null>(null);
   const [summarySaved, setSummarySaved] = useState(false);
-  const [summaryWorldChampion, setSummaryWorldChampion] = useState(false);
 
   useEffect(() => {
     const failures = runScoringSelfCheck();
@@ -206,7 +197,6 @@ export default function App() {
     setSelectedStoneColor("black");
     setLastResultIndex(null);
     setSummarySaved(false);
-    setSummaryWorldChampion(false);
     setAppState("memorizing");
   }
 
@@ -298,18 +288,8 @@ export default function App() {
       })),
     };
 
-    setProgress((current) => {
-      const withSession = appendSession(current, sessionResult);
-      return updateLevel10Streak(withSession, nextSession.level, sessionResult.totalMistakes, date);
-    });
+    setProgress((current) => appendSession(current, sessionResult));
     setSummarySaved(true);
-    const nextDates = updateLevel10Streak(
-      progress,
-      nextSession.level,
-      sessionResult.totalMistakes,
-      date,
-    ).level10PerfectDates;
-    setSummaryWorldChampion(hasConsecutivePerfectDays(nextDates, 7));
   }
 
   function handleContinueFromResult(): void {
@@ -437,7 +417,7 @@ export default function App() {
           recommendedLevel={levelRecommendation}
           recommendationLabel={recommendationLabel}
           remainingSeconds={session.remainingSeconds}
-          showWorldChampionshipMessage={summaryWorldChampion}
+          showWorldChampionshipMessage={false}
           onRetry={retrySameLevel}
           onGoRecommended={goRecommendedLevel}
           onChooseAnother={chooseAnotherLevel}

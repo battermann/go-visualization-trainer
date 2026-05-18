@@ -12,7 +12,6 @@ const FIRST_LEVEL_BY_RANK: Record<string, number> = {
   "3 dan": 7,
   "4 dan": 7,
   "5 dan": 8,
-  "6+ dan": 10,
 };
 
 export function getRecommendedStartLevel(rank: string): number {
