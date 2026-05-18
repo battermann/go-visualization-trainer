@@ -235,6 +235,24 @@ button:disabled {
   grid-template-columns: 1fr 1fr;
 }
 
+.level-preview-grid {
+  margin-top: 16px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.level-preview-item {
+  border: 1px solid #2c3644;
+  border-radius: 8px;
+  padding: 10px;
+  background: #161d27;
+}
+
+.level-preview-item h3 {
+  margin-bottom: 8px;
+}
+
 .pause-panel {
   text-align: center;
 }
@@ -247,6 +265,10 @@ button:disabled {
 
 @media (max-width: 760px) {
   .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .level-preview-grid {
     grid-template-columns: 1fr;
   }
 }
