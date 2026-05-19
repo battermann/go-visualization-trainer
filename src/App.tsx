@@ -324,10 +324,6 @@ export default function App() {
     setAppState("level-overview");
   }
 
-  function chooseAnotherLevel(): void {
-    setAppState("home");
-  }
-
   function backHome(): void {
     setSession(null);
     setAppState("home");
@@ -420,7 +416,6 @@ export default function App() {
           showWorldChampionshipMessage={false}
           onRetry={retrySameLevel}
           onGoRecommended={goRecommendedLevel}
-          onChooseAnother={chooseAnotherLevel}
           onBackHome={backHome}
         />
       ) : null}

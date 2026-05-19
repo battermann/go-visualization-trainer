@@ -1,6 +1,6 @@
 import { LevelConfig } from "../types";
 import { Timer } from "./Timer";
-import { FaArrowRight, FaHome, FaListUl, FaRedoAlt } from "react-icons/fa";
+import { FaArrowRight, FaHome, FaRedoAlt } from "react-icons/fa";
 
 type LevelSummaryScreenProps = {
   level: LevelConfig;
@@ -13,7 +13,6 @@ type LevelSummaryScreenProps = {
   showWorldChampionshipMessage: boolean;
   onRetry: () => void;
   onGoRecommended: () => void;
-  onChooseAnother: () => void;
   onBackHome: () => void;
 };
 
@@ -34,7 +33,6 @@ export function LevelSummaryScreen({
   showWorldChampionshipMessage,
   onRetry,
   onGoRecommended,
-  onChooseAnother,
   onBackHome,
 }: LevelSummaryScreenProps) {
   const average = problemCount === 0 ? 0 : totalMistakes / problemCount;
@@ -63,10 +61,6 @@ export function LevelSummaryScreen({
         <button type="button" className="primary btn-with-icon" onClick={onGoRecommended}>
           <FaArrowRight aria-hidden="true" />
           Go to recommended level
-        </button>
-        <button type="button" className="btn-with-icon" onClick={onChooseAnother}>
-          <FaListUl aria-hidden="true" />
-          Choose another level
         </button>
         <button type="button" className="btn-with-icon" onClick={onBackHome}>
           <FaHome aria-hidden="true" />
