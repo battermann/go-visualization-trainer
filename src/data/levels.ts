@@ -1429,7 +1429,20 @@ export const LEVELS: LevelConfig[] = [
     timeLimitMinutes: 55,
     levelUpBelow: 40,
     levelDownAbove: 90,
-    problems: makeDummyProblem(9),
+    problems: makeProblemsFromCompactText(9, [
+      "w: b3 e4 6 8 b: b8 d6 7 g3 6",
+      "w: b: b5 8 9 c2 9 d2 3 7 e4 f1 9 g4 5 8 9 h5 i1 7",
+      "w: a2 b1 c4 6 8 9 e2 8 g4 h6 b: a4 9 b3 7 c5 d3 7 e4 6 f3 g1 g6 h4",
+      "w: b2 3 6 c2 8 d5 8 e8 f3 8 g8 h3 5 8 b: b4 7 c3 4 6 d2 3 7 e5 f7 g4 5 h4 7 i9",
+      "w: b1 7 9 c4 5 9 d3 5 e6 f4 6 8 g2 6 h3 4 8 9 b: b2 8 c2 8 d4 6 7 8 9 e5 7 f2 g3 h6 7 i2 9",
+      "w: a6 b2 3 7 c3 6 7 8 d2 4 e2 4 f5 6 g6 7 h5 7 8 i6 b: b4 5 6 c4 5 d3 5 6 7 8 e3 7 f2 3 7 8 g4 5 8 h2 4",
+      "w: a4 b3 5 6 c2 3 4 8 d6 7 e1 2 3 6 f3 4 g3 h2 3 i4 5 6 7 b: b2 c1 5 d1 2 3 4 8 e4 5 7 9 f1 5 6 7 8 g2 4 h1 4 5 6 i3",
+      "w: a2 b2 3 c2 d2 e3 f2 3 4 5 6 7 g2 4 5 9 h1 6 7 8 i2 6 9 b: a3 4 b4 7 c3 4 d3 7 8 e2 4 7 9 f8 g3 6 7 8 h2 3 4 5 i5 8",
+      "w: a3 4 5 8 b8 c8 9 d8 e1 2 3 4 5 6 8 9 f3 g3 h2 3 i3 4 5 6 7 8 b: a7 b7 c1 2 3 4 5 6 7 d7 e6 7 f7 g2 7 h3 4 5 6 7 8 9 i9",
+      "w: a1 7 9 b4 9 c2 4 6 8 d3 7 e3 f2 4 6 7 8 g3 4 5 h2 4 6 7 i2 9 b: a3 4 8 b3 6 8 c5 7 d2 4 8 e4 7 f1 5 9 g6 8 h1 3 5 i1 3 4 8",
+      "w: a2 3 b3 4 5 6 9 c2 7 9 d4 5 6 7 8 e2 4 f2 3 8 g2 4 h2 5 i2 b: a4 5 6 7 8 b1 2 7 8 c3 4 5 6 8 d2 3 9 e3 9 f4 5 g3 h3 4 6 i1 3 4",
+      "w: a7 9 b6 7 8 c1 2 8 9 d8 e8 f3 g3 5 h4 5 8 i7 8 9 b: a2 3 4 b1 2 3 4 5 c5 6 d1 2 3 5 6 7 9 e1 2 3 4 f1 4 5 7 8 9 g2 4 7 9 h1 2 3 6 9 i1 2 4 5",
+    ]),
   },
 ];
 
