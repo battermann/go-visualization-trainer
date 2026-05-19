@@ -14,6 +14,62 @@ function manhattanDistance(a: Stone, b: Stone): number {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 }
 
+function colorLabel(stone: Stone): string {
+  return stone.color === "black" ? "Black" : "White";
+}
+
+function removeMatchedPair(
+  targetIndex: number,
+  userIndex: number,
+  unmatchedTargets: Set<number>,
+  unmatchedUsers: Set<number>,
+): void {
+  unmatchedTargets.delete(targetIndex);
+  unmatchedUsers.delete(userIndex);
+}
+
+function findBestMatching(
+  targetIndexes: number[],
+  userIndexes: number[],
+  canMatch: (targetIndex: number, userIndex: number) => boolean,
+): Array<[number, number]> {
+  let best: Array<[number, number]> = [];
+
+  function search(
+    targetPosition: number,
+    usedUsers: Set<number>,
+    pairs: Array<[number, number]>,
+  ): void {
+    if (targetPosition >= targetIndexes.length) {
+      if (pairs.length > best.length) {
+        best = [...pairs];
+      }
+      return;
+    }
+
+    if (pairs.length + (targetIndexes.length - targetPosition) <= best.length) {
+      return;
+    }
+
+    const targetIndex = targetIndexes[targetPosition];
+    search(targetPosition + 1, usedUsers, pairs);
+
+    for (const userIndex of userIndexes) {
+      if (usedUsers.has(userIndex) || !canMatch(targetIndex, userIndex)) {
+        continue;
+      }
+      usedUsers.add(userIndex);
+      pairs.push([targetIndex, userIndex]);
+      search(targetPosition + 1, usedUsers, pairs);
+      pairs.pop();
+      usedUsers.delete(userIndex);
+    }
+  }
+
+  search(0, new Set(), []);
+  return best;
+}
+
 export function scoreProblem(targetStones: Stone[], userStones: Stone[]): ScoreResult {
   const mistakes: Mistake[] = [];
   const unmatchedTargets = new Set(targetStones.map((_, idx) => idx));
@@ -39,38 +95,54 @@ export function scoreProblem(targetStones: Stone[], userStones: Stone[]): ScoreR
         points: 1,
         targetStone,
         userStone,
-        message: `${targetStone.color === "black" ? "Black" : "White"} stone at ${toCoordLabel(targetStone)} has wrong color`,
+        message: `${colorLabel(targetStone)} stone at ${toCoordLabel(targetStone)} has wrong color`,
       });
     }
   });
 
-  for (const targetIndex of Array.from(unmatchedTargets)) {
-    const targetStone = targetStones[targetIndex];
-    let nearMissUserIndex: number | null = null;
-
-    for (const userIndex of unmatchedUsers) {
+  const nearMissPairs = findBestMatching(
+    Array.from(unmatchedTargets),
+    Array.from(unmatchedUsers),
+    (targetIndex, userIndex) => {
+      const targetStone = targetStones[targetIndex];
       const userStone = userStones[userIndex];
-      if (userStone.color !== targetStone.color) {
-        continue;
-      }
-      if (manhattanDistance(targetStone, userStone) === 1) {
-        nearMissUserIndex = userIndex;
-        break;
-      }
-    }
+      return targetStone.color === userStone.color && manhattanDistance(targetStone, userStone) === 1;
+    },
+  );
 
-    if (nearMissUserIndex !== null) {
-      const userStone = userStones[nearMissUserIndex];
-      unmatchedTargets.delete(targetIndex);
-      unmatchedUsers.delete(nearMissUserIndex);
-      mistakes.push({
-        type: "near-miss",
-        points: 1,
-        targetStone,
-        userStone,
-        message: `${targetStone.color === "black" ? "Black" : "White"} stone near ${toCoordLabel(targetStone)} is one intersection away`,
-      });
-    }
+  for (const [targetIndex, userIndex] of nearMissPairs) {
+    const targetStone = targetStones[targetIndex];
+    const userStone = userStones[userIndex];
+    removeMatchedPair(targetIndex, userIndex, unmatchedTargets, unmatchedUsers);
+    mistakes.push({
+      type: "near-miss",
+      points: 1,
+      targetStone,
+      userStone,
+      message: `${colorLabel(targetStone)} stone near ${toCoordLabel(targetStone)} is one intersection away`,
+    });
+  }
+
+  const remainingTargetIndexes = Array.from(unmatchedTargets);
+  const remainingUserIndexes = Array.from(unmatchedUsers);
+  const wrongPositionPairCount = Math.min(
+    remainingTargetIndexes.length,
+    remainingUserIndexes.length,
+  );
+
+  for (let i = 0; i < wrongPositionPairCount; i += 1) {
+    const targetIndex = remainingTargetIndexes[i];
+    const userIndex = remainingUserIndexes[i];
+    const targetStone = targetStones[targetIndex];
+    const userStone = userStones[userIndex];
+    removeMatchedPair(targetIndex, userIndex, unmatchedTargets, unmatchedUsers);
+    mistakes.push({
+      type: "wrong-position",
+      points: 2,
+      targetStone,
+      userStone,
+      message: `${colorLabel(userStone)} stone at ${toCoordLabel(userStone)} should be ${colorLabel(targetStone).toLowerCase()} at ${toCoordLabel(targetStone)}`,
+    });
   }
 
   for (const targetIndex of unmatchedTargets) {
@@ -129,11 +201,20 @@ const SCORING_EXAMPLES: ScoringCase[] = [
     name: "diagonal should not be near miss",
     target: [{ x: 4, y: 4, color: "white" }],
     user: [{ x: 5, y: 5, color: "white" }],
-    expectedPoints: 4,
+    expectedPoints: 2,
   },
   {
-    name: "missing and extra",
+    name: "far misplaced stone counts once",
     target: [{ x: 2, y: 2, color: "black" }],
+    user: [{ x: 8, y: 8, color: "black" }],
+    expectedPoints: 2,
+  },
+  {
+    name: "one misplaced plus one missing",
+    target: [
+      { x: 2, y: 2, color: "black" },
+      { x: 3, y: 3, color: "white" },
+    ],
     user: [{ x: 8, y: 8, color: "black" }],
     expectedPoints: 4,
   },
