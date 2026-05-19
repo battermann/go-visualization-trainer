@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { BoardHighlight, Stone, StoneColor } from "../types";
+import { playStoneClick } from "../logic/sound";
 
 type GoBoardProps = {
   size: number;
@@ -77,6 +78,7 @@ export function GoBoard({
     if (idx === -1) {
       flipStateRef.current.set(coordKey, false);
       onChange([...stones, { x, y, color: selectedColor }]);
+      playStoneClick();
       return;
     }
 
@@ -90,10 +92,12 @@ export function GoBoard({
       };
       flipStateRef.current.set(coordKey, true);
       onChange(next);
+      playStoneClick();
       return;
     }
     flipStateRef.current.delete(coordKey);
     onChange(stones.filter((_, index) => index !== idx));
+    playStoneClick();
   }
 
   const cells = [];
