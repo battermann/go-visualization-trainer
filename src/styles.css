@@ -112,8 +112,13 @@ button:disabled {
 
 .button-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+}
+
+.button-row > button {
+  min-width: max-content;
 }
 
 .button-row.wrap {
@@ -284,5 +289,12 @@ button:disabled {
 
   .level-preview-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .button-row > button {
+    flex: 1 1 calc(50% - 8px);
+    justify-content: center;
   }
 }
