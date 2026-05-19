@@ -89,6 +89,75 @@ button:disabled {
   font-weight: 600;
 }
 
+.source-credit {
+  color: #b8c2d1;
+  font-size: 0.95rem;
+}
+
+a {
+  color: #8fbeff;
+}
+
+a:hover {
+  color: #b8d7ff;
+}
+
+.rules-box {
+  margin: 14px 0;
+  border: 1px solid #2c3644;
+  border-radius: 8px;
+  background: #161d27;
+}
+
+.rules-box summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.rules-content {
+  padding: 0 12px 12px;
+}
+
+.rules-content ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.rules-content li {
+  margin-bottom: 5px;
+}
+
+.rules-table-wrap {
+  overflow-x: auto;
+}
+
+.rules-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.rules-table th,
+.rules-table td {
+  padding: 7px 8px;
+  border: 1px solid #2c3644;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rules-table th {
+  background: #222b37;
+}
+
+.rules-table td {
+  background: #141a23;
+}
+
 .summary-box {
   margin-top: 16px;
   padding-top: 12px;
