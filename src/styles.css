@@ -295,26 +295,23 @@ a:hover {
   font-size: 10px;
   font-weight: 700;
   background: #fff;
+  color: #11151b;
   border: 1px solid #555;
   border-radius: 4px;
   padding: 0 3px;
   z-index: 3;
 }
 
+.highlight-one-point {
+  outline: 2px dashed #7a5b00;
+}
+
+.highlight-two-point {
+  outline: 2px dashed #b02020;
+}
+
 .highlight-missing {
   outline: 2px dashed #8a3500;
-}
-
-.highlight-extra {
-  outline: 2px dashed #004f8a;
-}
-
-.highlight-wrong-color {
-  outline: 2px solid #b02020;
-}
-
-.highlight-near-miss {
-  outline: 2px solid #7a5b00;
 }
 
 .result-grid {

@@ -37,7 +37,7 @@ export type ScoreResult = {
 export type BoardHighlight = {
   x: number;
   y: number;
-  kind: "missing" | "extra" | "wrong-color" | "near-miss";
+  kind: "one-point" | "two-point" | "missing";
   label: string;
 };
 

@@ -12,69 +12,32 @@ type ProblemResultScreenProps = {
 };
 
 function buildTargetHighlights(result: ProblemScoreResult): BoardHighlight[] {
-  const highlights: BoardHighlight[] = [];
-  for (const mistake of result.scoreResult.mistakes) {
-    if (!mistake.targetStone) {
-      continue;
-    }
-    if (mistake.type === "missing") {
-      highlights.push({
-        x: mistake.targetStone.x,
-        y: mistake.targetStone.y,
-        kind: "missing",
-        label: "M",
-      });
-    }
-    if (mistake.type === "wrong-color") {
-      highlights.push({
-        x: mistake.targetStone.x,
-        y: mistake.targetStone.y,
-        kind: "wrong-color",
-        label: "C",
-      });
-    }
-    if (mistake.type === "near-miss") {
-      highlights.push({
-        x: mistake.targetStone.x,
-        y: mistake.targetStone.y,
-        kind: "near-miss",
-        label: "N",
-      });
-    }
-  }
-  return highlights;
+  return [];
 }
 
 function buildUserHighlights(result: ProblemScoreResult): BoardHighlight[] {
   const highlights: BoardHighlight[] = [];
   for (const mistake of result.scoreResult.mistakes) {
+    if (mistake.type === "missing" && mistake.targetStone) {
+      highlights.push({
+        x: mistake.targetStone.x,
+        y: mistake.targetStone.y,
+        kind: "missing",
+        label: "2",
+      });
+      continue;
+    }
+
     if (!mistake.userStone) {
       continue;
     }
-    if (mistake.type === "extra") {
-      highlights.push({
-        x: mistake.userStone.x,
-        y: mistake.userStone.y,
-        kind: "extra",
-        label: "E",
-      });
-    }
-    if (mistake.type === "wrong-color") {
-      highlights.push({
-        x: mistake.userStone.x,
-        y: mistake.userStone.y,
-        kind: "wrong-color",
-        label: "C",
-      });
-    }
-    if (mistake.type === "near-miss") {
-      highlights.push({
-        x: mistake.userStone.x,
-        y: mistake.userStone.y,
-        kind: "near-miss",
-        label: "N",
-      });
-    }
+
+    highlights.push({
+      x: mistake.userStone.x,
+      y: mistake.userStone.y,
+      kind: mistake.points === 1 ? "one-point" : "two-point",
+      label: String(mistake.points),
+    });
   }
   return highlights;
 }
