@@ -49,6 +49,7 @@ export function ReconstructionScreen({
           onClick={() => onSelectedColorChange("black")}
           aria-pressed={selectedColor === "black"}
         >
+          <span className="color-chip black" aria-hidden="true" />
           Black
         </button>
         <button
@@ -57,6 +58,7 @@ export function ReconstructionScreen({
           onClick={() => onSelectedColorChange("white")}
           aria-pressed={selectedColor === "white"}
         >
+          <span className="color-chip white" aria-hidden="true" />
           White
         </button>
       </div>

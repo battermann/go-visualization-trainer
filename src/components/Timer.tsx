@@ -12,7 +12,8 @@ function formatTime(totalSeconds: number): string {
 export function Timer({ remainingSeconds }: TimerProps) {
   return (
     <div className="timer" aria-live="polite">
-      Time left: <strong>{formatTime(remainingSeconds)}</strong>
+      <span>Time left</span>
+      <strong>{formatTime(remainingSeconds)}</strong>
     </div>
   );
 }

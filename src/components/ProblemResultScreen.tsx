@@ -59,7 +59,7 @@ export function ProblemResultScreen({
         Problem {problemIndex + 1} of {problemCount} Result
       </h1>
       <Timer remainingSeconds={remainingSeconds} />
-      <p>
+      <p className="score-callout">
         Mistake score: <strong>{result.mistakePoints}</strong>
       </p>
 
@@ -80,9 +80,9 @@ export function ProblemResultScreen({
 
       <h2>Mistakes</h2>
       {result.scoreResult.mistakes.length === 0 ? (
-        <p>No mistakes on this problem.</p>
+        <p className="empty-state">No mistakes on this problem.</p>
       ) : (
-        <ul>
+        <ul className="mistake-list">
           {result.scoreResult.mistakes.map((mistake, index) => (
             <li key={`${mistake.type}-${index}`}>
               {mistake.message}: {mistake.points} point{mistake.points === 1 ? "" : "s"}

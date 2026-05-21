@@ -41,14 +41,29 @@ export function LevelSummaryScreen({
     <section className="panel">
       <h1>Level {level.level} completed</h1>
       <Timer remainingSeconds={remainingSeconds} />
-      <p>Total mistakes: {totalMistakes}</p>
-      <p>Time used: {formatDuration(timeUsedSeconds)}</p>
-      <p>Problems: {problemCount}</p>
-      <p>Average mistakes/problem: {average.toFixed(2)}</p>
-      <p>
-        Recommendation: <strong>{recommendationLabel}</strong>
-      </p>
-      <p>Recommended next level: Level {recommendedLevel}</p>
+      <dl className="screen-facts summary-facts">
+        <div>
+          <dt>Total mistakes</dt>
+          <dd>{totalMistakes}</dd>
+        </div>
+        <div>
+          <dt>Time used</dt>
+          <dd>{formatDuration(timeUsedSeconds)}</dd>
+        </div>
+        <div>
+          <dt>Problems</dt>
+          <dd>{problemCount}</dd>
+        </div>
+        <div>
+          <dt>Average</dt>
+          <dd>{average.toFixed(2)}</dd>
+        </div>
+      </dl>
+      <div className="recommendation-band">
+        <span>Recommendation</span>
+        <strong>{recommendationLabel}</strong>
+        <p>Recommended next level: Level {recommendedLevel}</p>
+      </div>
       {showWorldChampionshipMessage ? (
         <p className="success">World Championship Mode unlocked. Congratulations.</p>
       ) : null}

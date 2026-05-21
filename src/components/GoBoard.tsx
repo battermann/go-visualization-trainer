@@ -32,6 +32,19 @@ function getHoshiPoints(size: number): Array<{ x: number; y: number }> {
       { x: 6, y: 6 },
     ];
   }
+  if (size === 19) {
+    return [
+      { x: 3, y: 3 },
+      { x: 3, y: 9 },
+      { x: 3, y: 15 },
+      { x: 9, y: 3 },
+      { x: 9, y: 9 },
+      { x: 9, y: 15 },
+      { x: 15, y: 3 },
+      { x: 15, y: 9 },
+      { x: 15, y: 15 },
+    ];
+  }
   return [];
 }
 

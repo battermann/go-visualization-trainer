@@ -330,9 +330,6 @@ export default function App() {
   }
 
   const lastSession = progress.sessions[progress.sessions.length - 1];
-  const lastSessionSummary = lastSession
-    ? `Last session: Level ${lastSession.level}, ${lastSession.totalMistakes} mistakes`
-    : undefined;
 
   return (
     <main className="app-shell">
@@ -343,7 +340,7 @@ export default function App() {
           selectedLevel={selectedLevel}
           levelCount={LEVELS.length}
           sessionCount={progress.sessions.length}
-          lastSessionSummary={lastSessionSummary}
+          lastSession={lastSession}
           onRankChange={handleRankChange}
           onLevelChange={handleLevelChange}
           onStart={startOverview}
