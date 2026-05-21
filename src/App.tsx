@@ -399,6 +399,8 @@ export default function App() {
       {appState === "problem-result" && session && lastResultIndex !== null ? (
         <ProblemResultScreen
           problem={session.problems[lastResultIndex]}
+          problemIndex={lastResultIndex}
+          problemCount={session.problems.length}
           result={session.results[lastResultIndex]}
           remainingSeconds={session.remainingSeconds}
           onContinue={handleContinueFromResult}

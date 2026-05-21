@@ -5,6 +5,8 @@ import { FaArrowRight, FaHome } from "react-icons/fa";
 
 type ProblemResultScreenProps = {
   problem: Problem;
+  problemIndex: number;
+  problemCount: number;
   result: ProblemScoreResult;
   remainingSeconds: number;
   onContinue: () => void;
@@ -44,6 +46,8 @@ function buildUserHighlights(result: ProblemScoreResult): BoardHighlight[] {
 
 export function ProblemResultScreen({
   problem,
+  problemIndex,
+  problemCount,
   result,
   remainingSeconds,
   onContinue,
@@ -51,7 +55,9 @@ export function ProblemResultScreen({
 }: ProblemResultScreenProps) {
   return (
     <section className="panel">
-      <h1>Problem Result</h1>
+      <h1>
+        Problem {problemIndex + 1} of {problemCount} Result
+      </h1>
       <Timer remainingSeconds={remainingSeconds} />
       <p>
         Mistake score: <strong>{result.mistakePoints}</strong>
