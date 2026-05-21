@@ -372,7 +372,9 @@ export default function App() {
       {appState === "pause" ? (
         <section className="panel pause-panel">
           <h1>Close your eyes</h1>
-          <p className="pause-count">{pauseCountdown}</p>
+          <p key={pauseCountdown} className="pause-count">
+            {pauseCountdown}
+          </p>
         </section>
       ) : null}
 

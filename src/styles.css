@@ -28,6 +28,7 @@ body {
   border: 1px solid #2c3644;
   border-radius: 8px;
   padding: 16px;
+  animation: screen-enter 180ms ease-out both;
 }
 
 h1,
@@ -67,6 +68,21 @@ button {
   background: #222b37;
   color: #e8ecf3;
   cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 90ms ease,
+    box-shadow 140ms ease;
+}
+
+button:not(:disabled):hover {
+  background: #2a3442;
+  border-color: #4b5b70;
+}
+
+button:not(:disabled):active {
+  transform: translateY(1px) scale(0.99);
 }
 
 button:disabled {
@@ -85,6 +101,11 @@ button:disabled {
   color: #fff;
 }
 
+.primary:not(:disabled):hover {
+  background: #4b86c2;
+  border-color: #3f78b3;
+}
+
 .recommended {
   font-weight: 600;
 }
@@ -96,6 +117,7 @@ button:disabled {
 
 a {
   color: #8fbeff;
+  transition: color 140ms ease;
 }
 
 a:hover {
@@ -107,6 +129,9 @@ a:hover {
   border: 1px solid #2c3644;
   border-radius: 8px;
   background: #161d27;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease;
 }
 
 .rules-box summary {
@@ -274,6 +299,7 @@ a:hover {
   padding: 0;
   overflow: hidden;
   margin-bottom: 12px;
+  animation: board-enter 220ms ease-out both;
 }
 
 .go-board.with-coordinates {
@@ -338,6 +364,7 @@ a:hover {
     transform 110ms ease,
     box-shadow 110ms ease,
     opacity 110ms ease;
+  animation: stone-settle 130ms cubic-bezier(0.2, 0.9, 0.25, 1.25) both;
 }
 
 .stone.black {
@@ -365,6 +392,7 @@ a:hover {
   opacity: 0.42;
   transform: scale(0.92);
   box-shadow: none;
+  animation: none;
 }
 
 .highlight-label {
@@ -379,6 +407,7 @@ a:hover {
   border-radius: 4px;
   padding: 0 3px;
   z-index: 3;
+  animation: marker-enter 160ms ease-out both;
 }
 
 .highlight-one-point {
@@ -411,6 +440,10 @@ a:hover {
   border-radius: 8px;
   padding: 10px;
   background: #161d27;
+  animation: screen-enter 180ms ease-out both;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease;
 }
 
 .level-preview-item h3 {
@@ -425,6 +458,78 @@ a:hover {
   font-size: 3rem;
   font-weight: 700;
   margin: 0;
+  animation: count-pulse 260ms ease-out both;
+}
+
+@keyframes screen-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes board-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.992);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes stone-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes marker-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes count-pulse {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
 }
 
 @media (max-width: 760px) {
