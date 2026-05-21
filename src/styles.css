@@ -217,6 +217,38 @@ a:hover {
   margin-bottom: 8px;
 }
 
+.coord-label {
+  position: relative;
+  z-index: 2;
+  color: #3f280d;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+  align-self: center;
+  justify-self: center;
+}
+
+.coord-label-top {
+  align-self: end;
+  padding-bottom: 2px;
+}
+
+.coord-label-bottom {
+  align-self: start;
+  padding-top: 2px;
+}
+
+.coord-label-left {
+  justify-self: end;
+  padding-right: 3px;
+}
+
+.coord-label-right {
+  justify-self: start;
+  padding-left: 3px;
+}
+
 .go-board {
   position: relative;
   width: 100%;
@@ -244,6 +276,10 @@ a:hover {
   margin-bottom: 12px;
 }
 
+.go-board.with-coordinates {
+  max-width: 556px;
+}
+
 .board-grid {
   position: absolute;
   inset: 0;
@@ -251,6 +287,12 @@ a:hover {
   height: 100%;
   z-index: 0;
   pointer-events: none;
+}
+
+.board-grid.coordinate-grid {
+  inset: 22px;
+  width: calc(100% - 44px);
+  height: calc(100% - 44px);
 }
 
 .board-grid line {

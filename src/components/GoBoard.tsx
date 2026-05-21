@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactElement } from "react";
 import { BoardHighlight, Stone, StoneColor } from "../types";
 import { playStoneClick } from "../logic/sound";
 
@@ -10,6 +11,7 @@ type GoBoardProps = {
   onChange?: (stones: Stone[]) => void;
   highlights?: BoardHighlight[];
   title?: string;
+  showCoordinates?: boolean;
 };
 
 function keyFromXY(x: number, y: number): string {
@@ -41,6 +43,7 @@ export function GoBoard({
   onChange,
   highlights = [],
   title,
+  showCoordinates = false,
 }: GoBoardProps) {
   const flipStateRef = useRef<Map<string, boolean>>(new Map());
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
@@ -100,7 +103,7 @@ export function GoBoard({
     playStoneClick();
   }
 
-  const cells = [];
+  const cells: ReactElement[] = [];
   for (let y = 0; y < size; y += 1) {
     for (let x = 0; x < size; x += 1) {
       const key = keyFromXY(x, y);
@@ -119,6 +122,14 @@ export function GoBoard({
           key={key}
           type="button"
           className={className}
+          style={
+            showCoordinates
+              ? {
+                  gridColumn: x + 2,
+                  gridRow: y + 2,
+                }
+              : undefined
+          }
           onClick={() => updateAt(x, y)}
           onMouseEnter={() => {
             if (editable) {
@@ -147,14 +158,18 @@ export function GoBoard({
     <section className="board-wrap">
       {title ? <h3>{title}</h3> : null}
       <div
-        className="go-board"
+        className={showCoordinates ? "go-board with-coordinates" : "go-board"}
         style={{
-          gridTemplateColumns: `repeat(${size}, 1fr)`,
-          gridTemplateRows: `repeat(${size}, 1fr)`,
+          gridTemplateColumns: showCoordinates
+            ? `22px repeat(${size}, 1fr) 22px`
+            : `repeat(${size}, 1fr)`,
+          gridTemplateRows: showCoordinates
+            ? `22px repeat(${size}, 1fr) 22px`
+            : `repeat(${size}, 1fr)`,
         }}
       >
         <svg
-          className="board-grid"
+          className={showCoordinates ? "board-grid coordinate-grid" : "board-grid"}
           viewBox={`0 0 ${size} ${size}`}
           preserveAspectRatio="none"
           aria-hidden="true"
@@ -179,6 +194,50 @@ export function GoBoard({
           ))}
         </svg>
         {cells}
+        {showCoordinates
+          ? Array.from({ length: size }, (_, x) => (
+              <span
+                key={`top-${x}`}
+                className="coord-label coord-label-top"
+                style={{ gridColumn: x + 2, gridRow: 1 }}
+              >
+                {String.fromCharCode(65 + x)}
+              </span>
+            ))
+          : null}
+        {showCoordinates
+          ? Array.from({ length: size }, (_, y) => (
+              <span
+                key={`left-${y}`}
+                className="coord-label coord-label-left"
+                style={{ gridColumn: 1, gridRow: y + 2 }}
+              >
+                {size - y}
+              </span>
+            ))
+          : null}
+        {showCoordinates
+          ? Array.from({ length: size }, (_, y) => (
+              <span
+                key={`right-${y}`}
+                className="coord-label coord-label-right"
+                style={{ gridColumn: size + 2, gridRow: y + 2 }}
+              >
+                {size - y}
+              </span>
+            ))
+          : null}
+        {showCoordinates
+          ? Array.from({ length: size }, (_, x) => (
+              <span
+                key={`bottom-${x}`}
+                className="coord-label coord-label-bottom"
+                style={{ gridColumn: x + 2, gridRow: size + 2 }}
+              >
+                {String.fromCharCode(65 + x)}
+              </span>
+            ))
+          : null}
       </div>
     </section>
   );
