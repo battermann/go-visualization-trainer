@@ -354,6 +354,7 @@ a:hover {
 }
 
 .rules-box {
+  min-width: 0;
   margin: 14px 0;
   border: 1px solid #2c3644;
   border-radius: 8px;
@@ -378,6 +379,7 @@ a:hover {
 
 .rules-content {
   padding: 0 12px 12px;
+  overflow-wrap: anywhere;
 }
 
 .rules-content ul {
@@ -390,7 +392,25 @@ a:hover {
 }
 
 .rules-table-wrap {
+  position: relative;
+  max-width: 100%;
   overflow-x: auto;
+  border: 1px solid #2c3644;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rules-table-wrap::after {
+  position: sticky;
+  right: 0;
+  display: block;
+  width: 34px;
+  height: 0;
+  margin-top: -1px;
+  margin-left: auto;
+  content: "";
+  box-shadow: -18px 0 20px rgba(20, 26, 35, 0.88);
+  pointer-events: none;
 }
 
 .rules-table {
@@ -403,9 +423,20 @@ a:hover {
 .rules-table th,
 .rules-table td {
   padding: 7px 8px;
-  border: 1px solid #2c3644;
+  border: 0;
+  border-right: 1px solid #2c3644;
+  border-bottom: 1px solid #2c3644;
   text-align: left;
   white-space: nowrap;
+}
+
+.rules-table th:last-child,
+.rules-table td:last-child {
+  border-right: 0;
+}
+
+.rules-table tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 .rules-table th {
@@ -882,6 +913,31 @@ a:hover {
 
   .home-progress {
     grid-template-columns: 1fr;
+  }
+
+  .rules-box summary {
+    align-items: flex-start;
+    line-height: 1.25;
+  }
+
+  .rules-content {
+    padding: 0 10px 10px;
+  }
+
+  .rules-table-wrap {
+    margin-right: -2px;
+    margin-left: -2px;
+    overflow-x: auto;
+  }
+
+  .rules-table {
+    min-width: 560px;
+    font-size: 0.86rem;
+  }
+
+  .rules-table th,
+  .rules-table td {
+    padding: 6px 7px;
   }
 
   .result-grid {
