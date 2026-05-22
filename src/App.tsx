@@ -56,6 +56,37 @@ function getRecommendation(levelConfig: LevelConfig, totalMistakes: number): num
   return levelConfig.level;
 }
 
+function getStoredSessionRecommendation(progress: AppProgress): number | null {
+  const lastSession = progress.sessions[progress.sessions.length - 1];
+  if (!lastSession) {
+    return null;
+  }
+
+  const levelConfig = LEVELS.find((entry) => entry.level === lastSession.level);
+  if (!levelConfig) {
+    return null;
+  }
+
+  return getRecommendation(levelConfig, lastSession.totalMistakes);
+}
+
+function isKnownLevel(level: number | undefined): level is number {
+  return typeof level === "number" && LEVELS.some((entry) => entry.level === level);
+}
+
+function getInitialSelectedLevel(progress: AppProgress, selectedRank: string): number {
+  const sessionRecommendation = getStoredSessionRecommendation(progress);
+  if (sessionRecommendation !== null) {
+    return sessionRecommendation;
+  }
+
+  if (isKnownLevel(progress.lastSelectedLevel)) {
+    return progress.lastSelectedLevel;
+  }
+
+  return getRecommendedStartLevel(selectedRank);
+}
+
 function getRecommendationLabel(currentLevel: number, recommendedLevel: number) {
   if (recommendedLevel > currentLevel) {
     return "Level up" as const;
@@ -68,16 +99,16 @@ function getRecommendationLabel(currentLevel: number, recommendedLevel: number) 
 
 export default function App() {
   const initialProgress = useMemo(() => loadProgress(), []);
+  const initialRank = initialProgress.lastSelectedRank ?? "15 kyu";
+  const initialSessionRecommendation = getStoredSessionRecommendation(initialProgress);
   const [progress, setProgress] = useState<AppProgress>(initialProgress);
   const [appState, setAppState] = useState<AppState>("home");
-  const [selectedRank, setSelectedRank] = useState<string>(
-    initialProgress.lastSelectedRank ?? "15 kyu",
-  );
+  const [selectedRank, setSelectedRank] = useState<string>(initialRank);
   const [selectedLevel, setSelectedLevel] = useState<number>(
-    initialProgress.lastSelectedLevel &&
-      LEVELS.some((entry) => entry.level === initialProgress.lastSelectedLevel)
-      ? initialProgress.lastSelectedLevel
-      : getRecommendedStartLevel("15 kyu"),
+    getInitialSelectedLevel(initialProgress, initialRank),
+  );
+  const [useSessionRecommendation, setUseSessionRecommendation] = useState(
+    initialSessionRecommendation !== null,
   );
   const [session, setSession] = useState<TrainingSession | null>(null);
   const [selectedStoneColor, setSelectedStoneColor] = useState<"black" | "white">("black");
@@ -142,10 +173,20 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, [appState]);
 
-  const recommendedLevel = useMemo(
+  const rankRecommendedLevel = useMemo(
     () => getRecommendedStartLevel(selectedRank),
     [selectedRank],
   );
+
+  const storedSessionRecommendation = useMemo(
+    () => getStoredSessionRecommendation(progress),
+    [progress],
+  );
+
+  const recommendedLevel =
+    useSessionRecommendation && storedSessionRecommendation !== null
+      ? storedSessionRecommendation
+      : rankRecommendedLevel;
 
   const currentLevelConfig = useMemo(
     () => getLevelConfig(selectedLevel),
@@ -171,6 +212,7 @@ export default function App() {
   function handleRankChange(rank: string): void {
     setSelectedRank(rank);
     const recommended = getRecommendedStartLevel(rank);
+    setUseSessionRecommendation(false);
     setSelectedLevel(recommended);
     setProgress((current) => ({
       ...current,
