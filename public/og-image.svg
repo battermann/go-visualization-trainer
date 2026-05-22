@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121821"/>
+      <stop offset="0.58" stop-color="#18212b"/>
+      <stop offset="1" stop-color="#10151c"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e1b16f"/>
+      <stop offset="0.5" stop-color="#d09f5f"/>
+      <stop offset="1" stop-color="#c6904e"/>
+    </linearGradient>
+    <radialGradient id="wood-light" cx="24%" cy="18%" r="48%">
+      <stop offset="0" stop-color="#f6d99c" stop-opacity="0.46"/>
+      <stop offset="1" stop-color="#f6d99c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="black-stone" cx="36%" cy="28%" r="70%">
+      <stop offset="0" stop-color="#494949"/>
+      <stop offset="0.22" stop-color="#151515"/>
+      <stop offset="1" stop-color="#050505"/>
+    </radialGradient>
+    <radialGradient id="white-stone" cx="34%" cy="26%" r="72%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.35" stop-color="#f8f8f8"/>
+      <stop offset="1" stop-color="#d6d6d6"/>
+    </radialGradient>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#000000" flood-opacity="0.34"/>
+    </filter>
+    <filter id="stone-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#page)"/>
+  <circle cx="184" cy="20" r="260" fill="#3f78b3" opacity="0.13"/>
+  <circle cx="1040" cy="62" r="220" fill="#e0b06d" opacity="0.1"/>
+
+  <text x="74" y="170" fill="#f3f6fb" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="0">
+    Go Visualization
+  </text>
+  <text x="74" y="250" fill="#f3f6fb" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="0">
+    Trainer
+  </text>
+  <text x="78" y="322" fill="#c9d3e2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="31" font-weight="500">
+    Study a Go position, hide it, then rebuild it
+  </text>
+  <text x="78" y="366" fill="#c9d3e2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="31" font-weight="500">
+    from memory on a clean board.
+  </text>
+
+  <g transform="translate(78 438)">
+    <rect width="282" height="58" rx="29" fill="#223044" stroke="#3b5874"/>
+    <text x="30" y="38" fill="#dcecff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">
+      9x9 memory practice
+    </text>
+  </g>
+
+  <g transform="translate(760 124)" filter="url(#soft-shadow)">
+    <rect width="372" height="372" rx="8" fill="url(#wood)"/>
+    <rect width="372" height="372" rx="8" fill="url(#wood-light)"/>
+    <g opacity="0.18">
+      <path d="M0 54 C90 28 156 84 244 56 C306 36 336 42 372 28" fill="none" stroke="#5c3612" stroke-width="5"/>
+      <path d="M0 172 C88 140 158 196 238 164 C304 138 338 150 372 132" fill="none" stroke="#5c3612" stroke-width="4"/>
+      <path d="M0 294 C92 260 160 318 244 286 C306 262 340 270 372 250" fill="none" stroke="#5c3612" stroke-width="5"/>
+    </g>
+
+    <g stroke="#3f280d" stroke-width="2.2" stroke-linecap="square">
+      <line x1="40" y1="40" x2="332" y2="40"/>
+      <line x1="40" y1="76.5" x2="332" y2="76.5"/>
+      <line x1="40" y1="113" x2="332" y2="113"/>
+      <line x1="40" y1="149.5" x2="332" y2="149.5"/>
+      <line x1="40" y1="186" x2="332" y2="186"/>
+      <line x1="40" y1="222.5" x2="332" y2="222.5"/>
+      <line x1="40" y1="259" x2="332" y2="259"/>
+      <line x1="40" y1="295.5" x2="332" y2="295.5"/>
+      <line x1="40" y1="332" x2="332" y2="332"/>
+      <line x1="40" y1="40" x2="40" y2="332"/>
+      <line x1="76.5" y1="40" x2="76.5" y2="332"/>
+      <line x1="113" y1="40" x2="113" y2="332"/>
+      <line x1="149.5" y1="40" x2="149.5" y2="332"/>
+      <line x1="186" y1="40" x2="186" y2="332"/>
+      <line x1="222.5" y1="40" x2="222.5" y2="332"/>
+      <line x1="259" y1="40" x2="259" y2="332"/>
+      <line x1="295.5" y1="40" x2="295.5" y2="332"/>
+      <line x1="332" y1="40" x2="332" y2="332"/>
+    </g>
+    <g fill="#3f280d">
+      <circle cx="113" cy="113" r="4.5"/>
+      <circle cx="113" cy="259" r="4.5"/>
+      <circle cx="186" cy="186" r="4.5"/>
+      <circle cx="259" cy="113" r="4.5"/>
+      <circle cx="259" cy="259" r="4.5"/>
+    </g>
+
+    <g filter="url(#stone-shadow)">
+      <circle cx="186" cy="186" r="17" fill="url(#black-stone)"/>
+      <circle cx="259" cy="222.5" r="17" fill="url(#white-stone)"/>
+      <circle cx="259" cy="149.5" r="17" fill="url(#black-stone)"/>
+      <circle cx="113" cy="149.5" r="17" fill="url(#white-stone)"/>
+      <circle cx="222.5" cy="259" r="17" fill="url(#black-stone)"/>
+      <circle cx="295.5" cy="149.5" r="17" fill="url(#white-stone)"/>
+      <circle cx="295.5" cy="113" r="17" fill="url(#black-stone)"/>
+      <circle cx="259" cy="259" r="17" fill="url(#white-stone)"/>
+      <circle cx="113" cy="76.5" r="17" fill="url(#black-stone)"/>
+      <circle cx="113" cy="259" r="17" fill="url(#white-stone)"/>
+    </g>
+  </g>
+</svg>
