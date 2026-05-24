@@ -1453,7 +1453,7 @@ export const LEVELS: LevelConfig[] = [
     problems: [
       {
         id: "level-10-problem-1",
-        boardSize: 9,
+        boardSize: 13,
         stones: [],
       },
     ],
