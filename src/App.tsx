@@ -10,8 +10,10 @@ import { getRecommendedStartLevel } from "./logic/rankMapping";
 import { runScoringSelfCheck, scoreProblem } from "./logic/scoring";
 import {
   appendSession,
+  hasConsecutivePerfectDays,
   loadProgress,
   saveProgress,
+  updateLevel10Streak,
 } from "./logic/storage";
 import { AppState, AppProgress, LevelConfig, Problem, TrainingSession } from "./types";
 
@@ -43,6 +45,16 @@ function buildSession(levelConfig: LevelConfig): TrainingSession {
 
 function getRecommendation(levelConfig: LevelConfig, totalMistakes: number): number {
   const maxLevel = LEVELS[LEVELS.length - 1]?.level ?? levelConfig.level;
+
+  if (levelConfig.level === maxLevel) {
+    if (
+      levelConfig.levelDownAbove !== null &&
+      totalMistakes > levelConfig.levelDownAbove
+    ) {
+      return Math.max(1, levelConfig.level - 1);
+    }
+    return levelConfig.level;
+  }
 
   if (totalMistakes < levelConfig.levelUpBelow) {
     return Math.min(maxLevel, levelConfig.level + 1);
@@ -87,11 +99,19 @@ function getInitialSelectedLevel(progress: AppProgress, selectedRank: string): n
   return getRecommendedStartLevel(selectedRank);
 }
 
-function getRecommendationLabel(currentLevel: number, recommendedLevel: number) {
-  if (recommendedLevel > currentLevel) {
+function getRecommendationLabel(
+  levelConfig: LevelConfig,
+  recommendedLevel: number,
+  totalMistakes: number,
+) {
+  const maxLevel = LEVELS[LEVELS.length - 1]?.level ?? levelConfig.level;
+  if (levelConfig.level === maxLevel && totalMistakes === 0) {
+    return "Perfect Level 10" as const;
+  }
+  if (recommendedLevel > levelConfig.level) {
     return "Level up" as const;
   }
-  if (recommendedLevel < currentLevel) {
+  if (recommendedLevel < levelConfig.level) {
     return "Level down" as const;
   }
   return "Stay on same level" as const;
@@ -207,7 +227,11 @@ export default function App() {
     : 0;
 
   const levelRecommendation = getRecommendation(currentLevelConfig, totalMistakes);
-  const recommendationLabel = getRecommendationLabel(currentLevelConfig.level, levelRecommendation);
+  const recommendationLabel = getRecommendationLabel(
+    currentLevelConfig,
+    levelRecommendation,
+    totalMistakes,
+  );
 
   function handleRankChange(rank: string): void {
     setSelectedRank(rank);
@@ -318,11 +342,15 @@ export default function App() {
       return;
     }
     const date = nowDateISO();
+    const totalSessionMistakes = nextSession.results.reduce(
+      (sum, result) => sum + result.mistakePoints,
+      0,
+    );
     const sessionResult = {
       id: `${nextSession.level}-${nextSession.startedAt}`,
       date,
       level: nextSession.level,
-      totalMistakes: nextSession.results.reduce((sum, result) => sum + result.mistakePoints, 0),
+      totalMistakes: totalSessionMistakes,
       timeUsedSeconds: currentLevelConfig.timeLimitMinutes * 60 - nextSession.remainingSeconds,
       problemResults: nextSession.results.map((result) => ({
         problemId: result.problemId,
@@ -330,7 +358,14 @@ export default function App() {
       })),
     };
 
-    setProgress((current) => appendSession(current, sessionResult));
+    setProgress((current) => {
+      return updateLevel10Streak(
+        appendSession(current, sessionResult),
+        nextSession.level,
+        totalSessionMistakes,
+        date,
+      );
+    });
     setSummarySaved(true);
   }
 
@@ -372,6 +407,10 @@ export default function App() {
   }
 
   const lastSession = progress.sessions[progress.sessions.length - 1];
+  const showWorldChampionshipMessage =
+    session?.level === (LEVELS[LEVELS.length - 1]?.level ?? null) &&
+    totalMistakes === 0 &&
+    hasConsecutivePerfectDays(progress.level10PerfectDates);
 
   return (
     <main className="app-shell">
@@ -456,7 +495,7 @@ export default function App() {
           recommendedLevel={levelRecommendation}
           recommendationLabel={recommendationLabel}
           remainingSeconds={session.remainingSeconds}
-          showWorldChampionshipMessage={false}
+          showWorldChampionshipMessage={showWorldChampionshipMessage}
           onRetry={retrySameLevel}
           onGoRecommended={goRecommendedLevel}
           onBackHome={backHome}

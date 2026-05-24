@@ -54,6 +54,10 @@ const homePreviewPositions: Stone[][] = [
   ],
 ];
 
+function levelUpText(level: (typeof LEVELS)[number]): string {
+  return level.levelUpBelow === 0 ? "0" : `<${level.levelUpBelow}`;
+}
+
 export function HomeScreen({
   selectedRank,
   recommendedLevel,
@@ -192,7 +196,7 @@ export function HomeScreen({
                     <td>{level.level}</td>
                     <td>{level.rank}</td>
                     <td>{level.timeLimitMinutes} min</td>
-                    <td>&lt;{level.levelUpBelow}</td>
+                    <td>{levelUpText(level)}</td>
                     <td>
                       {level.levelDownAbove === null ? "/" : `>${level.levelDownAbove}`}
                     </td>

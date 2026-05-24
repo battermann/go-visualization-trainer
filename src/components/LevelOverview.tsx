@@ -9,6 +9,10 @@ type LevelOverviewProps = {
   onBack: () => void;
 };
 
+function levelUpText(level: LevelConfig): string {
+  return level.levelUpBelow === 0 ? "0" : `<${level.levelUpBelow}`;
+}
+
 export function LevelOverview({ level, onStartTraining, onBack }: LevelOverviewProps) {
   const [showAllBoards, setShowAllBoards] = useState(false);
 
@@ -30,7 +34,7 @@ export function LevelOverview({ level, onStartTraining, onBack }: LevelOverviewP
         </div>
         <div>
           <dt>Level up</dt>
-          <dd>&lt;{level.levelUpBelow}</dd>
+          <dd>{levelUpText(level)}</dd>
         </div>
         <div>
           <dt>Level down</dt>

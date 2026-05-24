@@ -8,7 +8,7 @@ type LevelSummaryScreenProps = {
   timeUsedSeconds: number;
   problemCount: number;
   recommendedLevel: number;
-  recommendationLabel: "Level up" | "Stay on same level" | "Level down";
+  recommendationLabel: "Level up" | "Stay on same level" | "Level down" | "Perfect Level 10";
   remainingSeconds: number;
   showWorldChampionshipMessage: boolean;
   onRetry: () => void;

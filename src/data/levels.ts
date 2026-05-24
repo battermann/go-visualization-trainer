@@ -1444,6 +1444,20 @@ export const LEVELS: LevelConfig[] = [
       "w: a7 9 b6 7 8 c1 2 8 9 d8 e8 f3 g3 5 h4 5 8 i7 8 9 b: a2 3 4 b1 2 3 4 5 c5 6 d1 2 3 5 6 7 9 e1 2 3 4 f1 4 5 7 8 9 g2 4 7 9 h1 2 3 6 9 i1 2 4 5",
     ]),
   },
+  {
+    level: 10,
+    rank: "6+ dan",
+    timeLimitMinutes: 60,
+    levelUpBelow: 0,
+    levelDownAbove: 100,
+    problems: [
+      {
+        id: "level-10-problem-1",
+        boardSize: 9,
+        stones: [],
+      },
+    ],
+  },
 ];
 
 export const RANK_OPTIONS = [
@@ -1460,4 +1474,5 @@ export const RANK_OPTIONS = [
   "3 dan",
   "4 dan",
   "5 dan",
+  "6+ dan",
 ];
