@@ -778,6 +778,53 @@ a:hover {
   color: #b8c2d1;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(8, 11, 15, 0.72);
+  animation: screen-enter 150ms ease-out both;
+}
+
+.modal-dialog {
+  position: relative;
+  width: min(100%, 430px);
+  padding: 20px;
+  border: 1px solid #2c3644;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(224, 176, 109, 0.08), transparent 26%),
+    #1a212b;
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
+}
+
+.modal-dialog h2 {
+  margin-right: 36px;
+}
+
+.modal-dialog p {
+  color: #c9d3e2;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+}
+
+.modal-actions {
+  justify-content: flex-end;
+}
+
 .level-preview-grid {
   margin-top: 16px;
   display: grid;

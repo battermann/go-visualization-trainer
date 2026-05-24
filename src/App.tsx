@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ConfirmDialog } from "./components/ConfirmDialog";
 import { HomeScreen } from "./components/HomeScreen";
 import { LevelOverview } from "./components/LevelOverview";
 import { LevelSummaryScreen } from "./components/LevelSummaryScreen";
@@ -175,6 +176,10 @@ function getRecommendationLabel(
   return "Stay on same level" as const;
 }
 
+function isActiveTrainingState(appState: AppState): boolean {
+  return ["memorizing", "pause", "reconstructing", "problem-result"].includes(appState);
+}
+
 export default function App() {
   const initialProgress = useMemo(() => loadProgress(), []);
   const initialRoute = useMemo(() => parseRoute(), []);
@@ -198,6 +203,9 @@ export default function App() {
   const [pauseCountdown, setPauseCountdown] = useState(3);
   const [lastResultIndex, setLastResultIndex] = useState<number | null>(null);
   const [summarySaved, setSummarySaved] = useState(false);
+  const [pendingExitRoute, setPendingExitRoute] = useState<Route | null>(null);
+  const sessionRef = useRef<TrainingSession | null>(null);
+  const appStateRef = useRef<AppState>(appState);
 
   useEffect(() => {
     const failures = runScoringSelfCheck();
@@ -209,6 +217,14 @@ export default function App() {
   useEffect(() => {
     saveProgress(progress);
   }, [progress]);
+
+  useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
+
+  useEffect(() => {
+    appStateRef.current = appState;
+  }, [appState]);
 
   useEffect(() => {
     if (!window.location.hash) {
@@ -223,6 +239,18 @@ export default function App() {
   useEffect(() => {
     function applyRoute(): void {
       const route = parseRoute();
+      const activeSession = sessionRef.current;
+      const leavingActiveTraining =
+        activeSession !== null &&
+        isActiveTrainingState(appStateRef.current) &&
+        (route.screen !== "training" || route.level !== activeSession.level);
+
+      if (leavingActiveTraining) {
+        replaceRoute({ screen: "training", level: activeSession.level });
+        setPendingExitRoute(route);
+        return;
+      }
+
       if (route.screen === "home") {
         setSession(null);
         setAppState("home");
@@ -517,9 +545,43 @@ export default function App() {
   }
 
   function backHome(): void {
+    if (session && isActiveTrainingState(appState)) {
+      setPendingExitRoute({ screen: "home" });
+      return;
+    }
     setSession(null);
     setAppState("home");
     pushRoute({ screen: "home" });
+  }
+
+  function cancelTrainingExit(): void {
+    setPendingExitRoute(null);
+    if (session && isActiveTrainingState(appState)) {
+      replaceRoute({ screen: "training", level: session.level });
+    }
+  }
+
+  function confirmTrainingExit(): void {
+    if (!pendingExitRoute) {
+      return;
+    }
+    const nextRoute = pendingExitRoute;
+    setPendingExitRoute(null);
+    setSession(null);
+
+    if (nextRoute.screen === "home") {
+      setAppState("home");
+      pushRoute({ screen: "home" });
+      return;
+    }
+
+    setSelectedLevel(nextRoute.level);
+    setProgress((current) => ({
+      ...current,
+      lastSelectedLevel: nextRoute.level,
+    }));
+    setAppState("level-overview");
+    pushRoute({ screen: "level-overview", level: nextRoute.level });
   }
 
   const lastSession = progress.sessions[progress.sessions.length - 1];
@@ -617,6 +679,15 @@ export default function App() {
           onBackHome={backHome}
         />
       ) : null}
+      <ConfirmDialog
+        open={pendingExitRoute !== null}
+        title="Leave training?"
+        message="Your current level progress will be lost."
+        cancelLabel="Stay in training"
+        confirmLabel="Leave training"
+        onCancel={cancelTrainingExit}
+        onConfirm={confirmTrainingExit}
+      />
     </main>
   );
 }
