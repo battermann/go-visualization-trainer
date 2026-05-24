@@ -44,6 +44,7 @@ export type BoardHighlight = {
 export type AppState =
   | "home"
   | "level-overview"
+  | "training"
   | "memorizing"
   | "pause"
   | "reconstructing"

@@ -25,6 +25,64 @@ function getLevelConfig(level: number): LevelConfig {
   return config;
 }
 
+type Route =
+  | { screen: "home" }
+  | { screen: "level-overview"; level: number }
+  | { screen: "training"; level: number };
+
+function getLevelNumberFromRoute(value: string | undefined): number | null {
+  if (!value) {
+    return null;
+  }
+  const level = Number(value);
+  return isKnownLevel(level) ? level : null;
+}
+
+function parseRoute(): Route {
+  const path = window.location.hash.replace(/^#\/?/, "");
+  if (!path) {
+    return { screen: "home" };
+  }
+
+  const parts = path.split("/");
+  if (parts[0] === "level") {
+    const level = getLevelNumberFromRoute(parts[1]);
+    if (level === null) {
+      return { screen: "home" };
+    }
+    if (parts[2] === "training") {
+      return { screen: "training", level };
+    }
+    return { screen: "level-overview", level };
+  }
+
+  return { screen: "home" };
+}
+
+function routePath(route: Route): string {
+  if (route.screen === "home") {
+    return "#/";
+  }
+  if (route.screen === "training") {
+    return `#/level/${route.level}/training`;
+  }
+  return `#/level/${route.level}`;
+}
+
+function pushRoute(route: Route): void {
+  const next = routePath(route);
+  if (window.location.hash !== next) {
+    window.history.pushState(null, "", next);
+  }
+}
+
+function replaceRoute(route: Route): void {
+  const next = routePath(route);
+  if (window.location.hash !== next) {
+    window.history.replaceState(null, "", next);
+  }
+}
+
 function nowDateISO(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -119,14 +177,19 @@ function getRecommendationLabel(
 
 export default function App() {
   const initialProgress = useMemo(() => loadProgress(), []);
+  const initialRoute = useMemo(() => parseRoute(), []);
   const initialRank = initialProgress.lastSelectedRank ?? "15 kyu";
   const initialSessionRecommendation = getStoredSessionRecommendation(initialProgress);
+  const initialSelectedLevel =
+    initialRoute.screen === "home"
+      ? getInitialSelectedLevel(initialProgress, initialRank)
+      : initialRoute.level;
   const [progress, setProgress] = useState<AppProgress>(initialProgress);
-  const [appState, setAppState] = useState<AppState>("home");
-  const [selectedRank, setSelectedRank] = useState<string>(initialRank);
-  const [selectedLevel, setSelectedLevel] = useState<number>(
-    getInitialSelectedLevel(initialProgress, initialRank),
+  const [appState, setAppState] = useState<AppState>(
+    initialRoute.screen === "home" ? "home" : "level-overview",
   );
+  const [selectedRank, setSelectedRank] = useState<string>(initialRank);
+  const [selectedLevel, setSelectedLevel] = useState<number>(initialSelectedLevel);
   const [useSessionRecommendation, setUseSessionRecommendation] = useState(
     initialSessionRecommendation !== null,
   );
@@ -146,6 +209,55 @@ export default function App() {
   useEffect(() => {
     saveProgress(progress);
   }, [progress]);
+
+  useEffect(() => {
+    if (!window.location.hash) {
+      replaceRoute({ screen: "home" });
+      return;
+    }
+    if (initialRoute.screen === "training") {
+      replaceRoute({ screen: "level-overview", level: initialRoute.level });
+    }
+  }, [initialRoute]);
+
+  useEffect(() => {
+    function applyRoute(): void {
+      const route = parseRoute();
+      if (route.screen === "home") {
+        setSession(null);
+        setAppState("home");
+        return;
+      }
+
+      setSelectedLevel(route.level);
+      setProgress((current) => ({
+        ...current,
+        lastSelectedLevel: route.level,
+      }));
+
+      if (route.screen === "level-overview") {
+        setSession(null);
+        setAppState("level-overview");
+        return;
+      }
+
+      setSession((current) => {
+        if (current?.level === route.level) {
+          return current;
+        }
+        replaceRoute({ screen: "level-overview", level: route.level });
+        setAppState("level-overview");
+        return null;
+      });
+    }
+
+    window.addEventListener("popstate", applyRoute);
+    window.addEventListener("hashchange", applyRoute);
+    return () => {
+      window.removeEventListener("popstate", applyRoute);
+      window.removeEventListener("hashchange", applyRoute);
+    };
+  }, []);
 
   useEffect(() => {
     if (!session) {
@@ -255,6 +367,7 @@ export default function App() {
 
   function startOverview(): void {
     setAppState("level-overview");
+    pushRoute({ screen: "level-overview", level: selectedLevel });
   }
 
   function startLevel(): void {
@@ -264,6 +377,7 @@ export default function App() {
     setLastResultIndex(null);
     setSummarySaved(false);
     setAppState("memorizing");
+    pushRoute({ screen: "training", level: level.level });
   }
 
   function handleMemorized(): void {
@@ -399,11 +513,13 @@ export default function App() {
     setSelectedLevel(levelRecommendation);
     setProgress((current) => ({ ...current, lastSelectedLevel: levelRecommendation }));
     setAppState("level-overview");
+    pushRoute({ screen: "level-overview", level: levelRecommendation });
   }
 
   function backHome(): void {
     setSession(null);
     setAppState("home");
+    pushRoute({ screen: "home" });
   }
 
   const lastSession = progress.sessions[progress.sessions.length - 1];
@@ -432,7 +548,7 @@ export default function App() {
         <LevelOverview
           level={currentLevelConfig}
           onStartTraining={startLevel}
-          onBack={() => setAppState("home")}
+          onBack={backHome}
         />
       ) : null}
 
