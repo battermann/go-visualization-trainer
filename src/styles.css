@@ -169,13 +169,26 @@ button:disabled {
   margin-top: 2px;
 }
 
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.status-row .timer,
+.status-row .score-callout {
+  margin: 0;
+}
+
 .score-callout {
   display: flex;
   align-items: center;
   gap: 8px;
   width: fit-content;
   min-height: 34px;
-  margin-bottom: 16px;
+  margin: 0 0 16px;
   padding: 5px 10px;
   border: 1px solid rgba(143, 190, 255, 0.24);
   border-radius: 999px;

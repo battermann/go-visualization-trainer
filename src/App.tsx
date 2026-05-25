@@ -658,6 +658,7 @@ export default function App() {
           problemIndex={lastResultIndex}
           problemCount={session.problems.length}
           result={session.results[lastResultIndex]}
+          totalMistakes={totalMistakes}
           remainingSeconds={session.remainingSeconds}
           onContinue={handleContinueFromResult}
           onBackHome={backHome}

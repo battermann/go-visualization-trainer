@@ -8,6 +8,7 @@ type ProblemResultScreenProps = {
   problemIndex: number;
   problemCount: number;
   result: ProblemScoreResult;
+  totalMistakes: number;
   remainingSeconds: number;
   onContinue: () => void;
   onBackHome: () => void;
@@ -49,6 +50,7 @@ export function ProblemResultScreen({
   problemIndex,
   problemCount,
   result,
+  totalMistakes,
   remainingSeconds,
   onContinue,
   onBackHome,
@@ -58,10 +60,15 @@ export function ProblemResultScreen({
       <h1>
         Problem {problemIndex + 1} of {problemCount} Result
       </h1>
-      <Timer remainingSeconds={remainingSeconds} />
-      <p className="score-callout">
-        Mistake score: <strong>{result.mistakePoints}</strong>
-      </p>
+      <div className="status-row">
+        <Timer remainingSeconds={remainingSeconds} />
+        <p className="score-callout">
+          Problem score <strong>{result.mistakePoints}</strong>
+        </p>
+        <p className="score-callout">
+          Total score <strong>{totalMistakes}</strong>
+        </p>
+      </div>
 
       <div className="result-grid">
         <GoBoard
