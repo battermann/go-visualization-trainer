@@ -1,7 +1,7 @@
 import { Problem } from "../types";
 import { GoBoard } from "./GoBoard";
 import { Timer } from "./Timer";
-import { FaEyeSlash, FaHome } from "react-icons/fa";
+import { FaDoorOpen, FaEyeSlash } from "react-icons/fa";
 
 type MemorizationScreenProps = {
   problem: Problem;
@@ -27,15 +27,19 @@ export function MemorizationScreen({
       </h1>
       <Timer remainingSeconds={remainingSeconds} />
       <GoBoard size={problem.boardSize} stones={problem.stones} title="Target position" />
-      <div className="button-row">
-        <button type="button" className="primary btn-with-icon" onClick={onMemorized}>
-          <FaEyeSlash aria-hidden="true" />
-          I memorized it
-        </button>
-        <button type="button" className="btn-with-icon" onClick={onBackHome}>
-          <FaHome aria-hidden="true" />
-          Home
-        </button>
+      <div className="action-bar board-action-bar">
+        <div className="action-group">
+          <button type="button" className="btn-with-icon" onClick={onBackHome}>
+            <FaDoorOpen aria-hidden="true" />
+            Exit training
+          </button>
+        </div>
+        <div className="action-group action-group-primary">
+          <button type="button" className="primary btn-with-icon" onClick={onMemorized}>
+            <FaEyeSlash aria-hidden="true" />
+            I memorized it
+          </button>
+        </div>
       </div>
     </section>
   );

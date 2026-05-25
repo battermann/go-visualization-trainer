@@ -1,7 +1,7 @@
 import { BoardHighlight, Problem, ProblemScoreResult } from "../types";
 import { GoBoard } from "./GoBoard";
 import { Timer } from "./Timer";
-import { FaArrowRight, FaHome } from "react-icons/fa";
+import { FaArrowRight, FaDoorOpen } from "react-icons/fa";
 
 type ProblemResultScreenProps = {
   problem: Problem;
@@ -91,15 +91,19 @@ export function ProblemResultScreen({
         </ul>
       )}
 
-      <div className="button-row">
-        <button type="button" className="primary btn-with-icon" onClick={onContinue}>
-          <FaArrowRight aria-hidden="true" />
-          Continue
-        </button>
-        <button type="button" className="btn-with-icon" onClick={onBackHome}>
-          <FaHome aria-hidden="true" />
-          Home
-        </button>
+      <div className="action-bar">
+        <div className="action-group">
+          <button type="button" className="btn-with-icon" onClick={onBackHome}>
+            <FaDoorOpen aria-hidden="true" />
+            Exit training
+          </button>
+        </div>
+        <div className="action-group action-group-primary">
+          <button type="button" className="primary btn-with-icon" onClick={onContinue}>
+            <FaArrowRight aria-hidden="true" />
+            Continue
+          </button>
+        </div>
       </div>
     </section>
   );

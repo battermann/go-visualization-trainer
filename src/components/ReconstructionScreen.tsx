@@ -1,7 +1,7 @@
 import { Stone, StoneColor } from "../types";
 import { GoBoard } from "./GoBoard";
 import { Timer } from "./Timer";
-import { FaCheck, FaEraser, FaHome, FaUndoAlt } from "react-icons/fa";
+import { FaCheck, FaDoorOpen, FaEraser, FaUndoAlt } from "react-icons/fa";
 
 type ReconstructionScreenProps = {
   boardSize: number;
@@ -72,23 +72,27 @@ export function ReconstructionScreen({
         title="Your reconstruction"
       />
 
-      <div className="button-row">
-        <button type="button" className="btn-with-icon" onClick={onUndo}>
-          <FaUndoAlt aria-hidden="true" />
-          Undo
-        </button>
-        <button type="button" className="btn-with-icon" onClick={onClear}>
-          <FaEraser aria-hidden="true" />
-          Clear board
-        </button>
-        <button type="button" className="primary btn-with-icon" onClick={onSubmit}>
-          <FaCheck aria-hidden="true" />
-          Submit
-        </button>
-        <button type="button" className="btn-with-icon" onClick={onBackHome}>
-          <FaHome aria-hidden="true" />
-          Home
-        </button>
+      <div className="action-bar board-action-bar">
+        <div className="action-group">
+          <button type="button" className="btn-with-icon" onClick={onUndo}>
+            <FaUndoAlt aria-hidden="true" />
+            Undo
+          </button>
+          <button type="button" className="btn-with-icon" onClick={onClear}>
+            <FaEraser aria-hidden="true" />
+            Clear board
+          </button>
+        </div>
+        <div className="action-group action-group-primary">
+          <button type="button" className="btn-with-icon" onClick={onBackHome}>
+            <FaDoorOpen aria-hidden="true" />
+            Exit training
+          </button>
+          <button type="button" className="primary btn-with-icon" onClick={onSubmit}>
+            <FaCheck aria-hidden="true" />
+            Submit
+          </button>
+        </div>
       </div>
     </section>
   );

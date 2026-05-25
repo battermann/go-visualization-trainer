@@ -506,6 +506,32 @@ a:hover {
   flex-wrap: wrap;
 }
 
+.action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.board-action-bar {
+  width: 100%;
+  max-width: 520px;
+}
+
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.action-group-primary {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
 .color-toggle {
   display: flex;
   width: fit-content;
@@ -997,6 +1023,25 @@ a:hover {
 }
 
 @media (max-width: 480px) {
+  .action-bar {
+    align-items: stretch;
+  }
+
+  .action-group,
+  .action-group-primary {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .action-group > button {
+    flex: 1 1 calc(50% - 8px);
+    justify-content: center;
+  }
+
+  .action-group-primary > .primary {
+    flex-grow: 2;
+  }
+
   .button-row > button {
     flex: 1 1 calc(50% - 8px);
     justify-content: center;
