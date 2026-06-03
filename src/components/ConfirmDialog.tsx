@@ -1,4 +1,5 @@
 import { FaTimes } from "react-icons/fa";
+import { useModalDismiss } from "../hooks/useModalDismiss";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -19,12 +20,14 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const { handleBackdropClick } = useModalDismiss(open, onCancel);
+
   if (!open) {
     return null;
   }
 
   return (
-    <div className="modal-backdrop" role="presentation">
+    <div className="modal-backdrop" role="presentation" onMouseDown={handleBackdropClick}>
       <section
         className="modal-dialog"
         role="dialog"

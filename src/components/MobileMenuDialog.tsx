@@ -1,4 +1,5 @@
 import { FaCog, FaHome, FaLayerGroup, FaTimes } from "react-icons/fa";
+import { useModalDismiss } from "../hooks/useModalDismiss";
 
 type MobileMenuDialogProps = {
   open: boolean;
@@ -17,6 +18,8 @@ export function MobileMenuDialog({
   onChooseLevel,
   onOpenSettings,
 }: MobileMenuDialogProps) {
+  const { handleBackdropClick } = useModalDismiss(open, onClose);
+
   if (!open) {
     return null;
   }
@@ -37,7 +40,7 @@ export function MobileMenuDialog({
   }
 
   return (
-    <div className="modal-backdrop" role="presentation">
+    <div className="modal-backdrop" role="presentation" onMouseDown={handleBackdropClick}>
       <section
         className="modal-dialog mobile-menu-dialog"
         role="dialog"

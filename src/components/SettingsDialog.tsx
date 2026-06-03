@@ -1,6 +1,7 @@
 import { FaDesktop, FaMoon, FaSun, FaTimes, FaVolumeUp } from "react-icons/fa";
 import { GoBoard } from "./GoBoard";
 import { playStoneClickWithSettings } from "../logic/sound";
+import { useModalDismiss } from "../hooks/useModalDismiss";
 import { BoardStylePreference, ThemePreference } from "../types";
 
 type SettingsDialogProps = {
@@ -28,6 +29,8 @@ export function SettingsDialog({
   onBoardStyleChange,
   onClose,
 }: SettingsDialogProps) {
+  const { handleBackdropClick } = useModalDismiss(open, onClose);
+
   if (!open) {
     return null;
   }
@@ -56,7 +59,7 @@ export function SettingsDialog({
   ];
 
   return (
-    <div className="modal-backdrop" role="presentation">
+    <div className="modal-backdrop" role="presentation" onMouseDown={handleBackdropClick}>
       <section
         className="modal-dialog settings-dialog"
         role="dialog"
