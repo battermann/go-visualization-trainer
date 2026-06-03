@@ -4,6 +4,8 @@ export type ThemePreference = "light" | "dark" | "system";
 
 export type AppSettings = {
   theme: ThemePreference;
+  soundEnabled: boolean;
+  soundVolume: number;
 };
 
 export type Stone = {

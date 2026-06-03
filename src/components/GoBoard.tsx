@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactElement } from "react";
 import { BoardHighlight, Stone, StoneColor } from "../types";
-import { playStoneClick } from "../logic/sound";
+import { playStoneClickWithSettings } from "../logic/sound";
 
 type GoBoardProps = {
   size: number;
@@ -12,6 +12,8 @@ type GoBoardProps = {
   highlights?: BoardHighlight[];
   title?: string;
   showCoordinates?: boolean;
+  soundEnabled?: boolean;
+  soundVolume?: number;
 };
 
 function keyFromXY(x: number, y: number): string {
@@ -66,6 +68,8 @@ export function GoBoard({
   highlights = [],
   title,
   showCoordinates = false,
+  soundEnabled = true,
+  soundVolume = 0.7,
 }: GoBoardProps) {
   const flipStateRef = useRef<Map<string, boolean>>(new Map());
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
@@ -103,7 +107,7 @@ export function GoBoard({
     if (idx === -1) {
       flipStateRef.current.set(coordKey, false);
       onChange([...stones, { x, y, color: selectedColor }]);
-      playStoneClick();
+      playStoneClickWithSettings(soundEnabled, soundVolume);
       return;
     }
 
@@ -117,12 +121,12 @@ export function GoBoard({
       };
       flipStateRef.current.set(coordKey, true);
       onChange(next);
-      playStoneClick();
+      playStoneClickWithSettings(soundEnabled, soundVolume);
       return;
     }
     flipStateRef.current.delete(coordKey);
     onChange(stones.filter((_, index) => index !== idx));
-    playStoneClick();
+    playStoneClickWithSettings(soundEnabled, soundVolume);
   }
 
   const cells: ReactElement[] = [];

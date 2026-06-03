@@ -717,6 +717,8 @@ export default function App() {
             timeExpired={session.timeExpired}
             stones={session.userStones}
             selectedColor={selectedStoneColor}
+            soundEnabled={settings.soundEnabled}
+            soundVolume={settings.soundVolume}
             onSelectedColorChange={setSelectedStoneColor}
             onStonesChange={handleUserStonesChange}
             onUndo={handleUndo}
@@ -759,7 +761,15 @@ export default function App() {
       <SettingsDialog
         open={settingsOpen}
         theme={settings.theme}
+        soundEnabled={settings.soundEnabled}
+        soundVolume={settings.soundVolume}
         onThemeChange={(theme) => setSettings((current) => ({ ...current, theme }))}
+        onSoundEnabledChange={(soundEnabled) =>
+          setSettings((current) => ({ ...current, soundEnabled }))
+        }
+        onSoundVolumeChange={(soundVolume) =>
+          setSettings((current) => ({ ...current, soundVolume }))
+        }
         onClose={() => setSettingsOpen(false)}
       />
       <MobileMenuDialog

@@ -11,6 +11,8 @@ type ReconstructionScreenProps = {
   timeExpired: boolean;
   stones: Stone[];
   selectedColor: StoneColor;
+  soundEnabled: boolean;
+  soundVolume: number;
   onSelectedColorChange: (color: StoneColor) => void;
   onStonesChange: (stones: Stone[]) => void;
   onUndo: () => void;
@@ -27,6 +29,8 @@ export function ReconstructionScreen({
   timeExpired,
   stones,
   selectedColor,
+  soundEnabled,
+  soundVolume,
   onSelectedColorChange,
   onStonesChange,
   onUndo,
@@ -68,6 +72,8 @@ export function ReconstructionScreen({
         stones={stones}
         editable
         selectedColor={selectedColor}
+        soundEnabled={soundEnabled}
+        soundVolume={soundVolume}
         onChange={onStonesChange}
         title="Your reconstruction"
       />

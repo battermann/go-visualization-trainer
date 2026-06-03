@@ -10,7 +10,16 @@ const EMPTY_PROGRESS: AppProgress = {
 
 const DEFAULT_SETTINGS: AppSettings = {
   theme: "dark",
+  soundEnabled: true,
+  soundVolume: 0.7,
 };
+
+function normalizeVolume(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return DEFAULT_SETTINGS.soundVolume;
+  }
+  return Math.min(1, Math.max(0, value));
+}
 
 export function loadProgress(): AppProgress {
   try {
@@ -48,6 +57,11 @@ export function loadSettings(): AppSettings {
         parsed.theme === "light" || parsed.theme === "dark" || parsed.theme === "system"
           ? parsed.theme
           : DEFAULT_SETTINGS.theme,
+      soundEnabled:
+        typeof parsed.soundEnabled === "boolean"
+          ? parsed.soundEnabled
+          : DEFAULT_SETTINGS.soundEnabled,
+      soundVolume: normalizeVolume(parsed.soundVolume),
     };
   } catch {
     return { ...DEFAULT_SETTINGS };

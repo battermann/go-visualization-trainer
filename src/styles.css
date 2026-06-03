@@ -1092,6 +1092,15 @@ a:hover {
   accent-color: #3f78b3;
 }
 
+.volume-control input:disabled,
+.sound-test-button:disabled {
+  opacity: 0.52;
+}
+
+.sound-test-button {
+  margin-top: 10px;
+}
+
 .mobile-menu-dialog {
   width: min(100%, 360px);
 }

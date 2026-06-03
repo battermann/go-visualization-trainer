@@ -1,22 +1,37 @@
 import { FaDesktop, FaMoon, FaSun, FaTimes, FaVolumeUp } from "react-icons/fa";
+import { playStoneClickWithSettings } from "../logic/sound";
 import { ThemePreference } from "../types";
 
 type SettingsDialogProps = {
   open: boolean;
   theme: ThemePreference;
+  soundEnabled: boolean;
+  soundVolume: number;
   onThemeChange: (theme: ThemePreference) => void;
+  onSoundEnabledChange: (enabled: boolean) => void;
+  onSoundVolumeChange: (volume: number) => void;
   onClose: () => void;
 };
 
 export function SettingsDialog({
   open,
   theme,
+  soundEnabled,
+  soundVolume,
   onThemeChange,
+  onSoundEnabledChange,
+  onSoundVolumeChange,
   onClose,
 }: SettingsDialogProps) {
   if (!open) {
     return null;
   }
+
+  const safeSoundEnabled = typeof soundEnabled === "boolean" ? soundEnabled : true;
+  const safeSoundVolume =
+    typeof soundVolume === "number" && Number.isFinite(soundVolume)
+      ? Math.min(1, Math.max(0, soundVolume))
+      : 0.7;
 
   function themeButtonClass(value: ThemePreference, extraClass = ""): string {
     return [theme === value ? "active" : "", extraClass].filter(Boolean).join(" ");
@@ -108,12 +123,32 @@ export function SettingsDialog({
               </span>
               <small>Play a short sound when a stone is placed.</small>
             </span>
-            <input type="checkbox" defaultChecked />
+            <input
+              type="checkbox"
+              checked={safeSoundEnabled}
+              onChange={(event) => onSoundEnabledChange(event.currentTarget.checked)}
+            />
           </label>
           <label className="volume-control">
-            <span>Volume</span>
-            <input type="range" min="0" max="100" defaultValue="70" />
+            <span>Volume {Math.round(safeSoundVolume * 100)}%</span>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={Math.round(safeSoundVolume * 100)}
+              disabled={!safeSoundEnabled}
+              onChange={(event) => onSoundVolumeChange(Number(event.currentTarget.value) / 100)}
+            />
           </label>
+          <button
+            type="button"
+            className="sound-test-button btn-with-icon"
+            disabled={!safeSoundEnabled}
+            onClick={() => playStoneClickWithSettings(safeSoundEnabled, safeSoundVolume)}
+          >
+            <FaVolumeUp aria-hidden="true" />
+            Test sound
+          </button>
         </div>
 
         <div className="button-row modal-actions">
