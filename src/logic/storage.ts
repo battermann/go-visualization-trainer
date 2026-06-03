@@ -1,10 +1,15 @@
-import { AppProgress, SessionResult } from "../types";
+import { AppProgress, AppSettings, SessionResult } from "../types";
 
 const STORAGE_KEY = "go-visualization-trainer-progress-v1";
+const SETTINGS_STORAGE_KEY = "go-visualization-trainer-settings-v1";
 
 const EMPTY_PROGRESS: AppProgress = {
   sessions: [],
   level10PerfectDates: [],
+};
+
+const DEFAULT_SETTINGS: AppSettings = {
+  theme: "dark",
 };
 
 export function loadProgress(): AppProgress {
@@ -29,6 +34,28 @@ export function loadProgress(): AppProgress {
 
 export function saveProgress(progress: AppProgress): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
+
+export function loadSettings(): AppSettings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (!raw) {
+      return { ...DEFAULT_SETTINGS };
+    }
+    const parsed = JSON.parse(raw) as Partial<AppSettings>;
+    return {
+      theme:
+        parsed.theme === "light" || parsed.theme === "dark" || parsed.theme === "system"
+          ? parsed.theme
+          : DEFAULT_SETTINGS.theme,
+    };
+  } catch {
+    return { ...DEFAULT_SETTINGS };
+  }
+}
+
+export function saveSettings(settings: AppSettings): void {
+  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
 }
 
 export function appendSession(progress: AppProgress, session: SessionResult): AppProgress {

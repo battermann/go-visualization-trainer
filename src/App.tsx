@@ -15,11 +15,21 @@ import { runScoringSelfCheck, scoreProblem } from "./logic/scoring";
 import {
   appendSession,
   hasConsecutivePerfectDays,
+  loadSettings,
   loadProgress,
+  saveSettings,
   saveProgress,
   updateLevel10Streak,
 } from "./logic/storage";
-import { AppState, AppProgress, LevelConfig, Problem, TrainingSession } from "./types";
+import {
+  AppState,
+  AppProgress,
+  AppSettings,
+  LevelConfig,
+  Problem,
+  ThemePreference,
+  TrainingSession,
+} from "./types";
 
 function getLevelConfig(level: number): LevelConfig {
   const config = LEVELS.find((entry) => entry.level === level);
@@ -183,8 +193,16 @@ function isActiveTrainingState(appState: AppState): boolean {
   return ["memorizing", "pause", "reconstructing", "problem-result"].includes(appState);
 }
 
+function resolveThemePreference(theme: ThemePreference): "light" | "dark" {
+  if (theme !== "system") {
+    return theme;
+  }
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
+
 export default function App() {
   const initialProgress = useMemo(() => loadProgress(), []);
+  const initialSettings = useMemo(() => loadSettings(), []);
   const initialRoute = useMemo(() => parseRoute(), []);
   const initialRank = initialProgress.lastSelectedRank ?? "15 kyu";
   const initialSessionRecommendation = getStoredSessionRecommendation(initialProgress);
@@ -198,6 +216,7 @@ export default function App() {
   );
   const [selectedRank, setSelectedRank] = useState<string>(initialRank);
   const [selectedLevel, setSelectedLevel] = useState<number>(initialSelectedLevel);
+  const [settings, setSettings] = useState<AppSettings>(initialSettings);
   const [useSessionRecommendation, setUseSessionRecommendation] = useState(
     initialSessionRecommendation !== null,
   );
@@ -222,6 +241,29 @@ export default function App() {
   useEffect(() => {
     saveProgress(progress);
   }, [progress]);
+
+  useEffect(() => {
+    saveSettings(settings);
+  }, [settings]);
+
+  useEffect(() => {
+    function applyTheme(): void {
+      const resolvedTheme = resolveThemePreference(settings.theme);
+      document.documentElement.classList.toggle("theme-light", resolvedTheme === "light");
+      document.documentElement.classList.toggle("theme-dark", resolvedTheme === "dark");
+      document.documentElement.style.colorScheme = resolvedTheme;
+    }
+
+    applyTheme();
+
+    if (settings.theme !== "system") {
+      return;
+    }
+
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    media.addEventListener("change", applyTheme);
+    return () => media.removeEventListener("change", applyTheme);
+  }, [settings.theme]);
 
   useEffect(() => {
     sessionRef.current = session;
@@ -714,7 +756,12 @@ export default function App() {
         ) : null}
       </main>
 
-      <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsDialog
+        open={settingsOpen}
+        theme={settings.theme}
+        onThemeChange={(theme) => setSettings((current) => ({ ...current, theme }))}
+        onClose={() => setSettingsOpen(false)}
+      />
       <MobileMenuDialog
         open={mobileMenuOpen}
         selectedLevel={selectedLevel}

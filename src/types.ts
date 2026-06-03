@@ -1,5 +1,11 @@
 export type StoneColor = "black" | "white";
 
+export type ThemePreference = "light" | "dark" | "system";
+
+export type AppSettings = {
+  theme: ThemePreference;
+};
+
 export type Stone = {
   x: number;
   y: number;

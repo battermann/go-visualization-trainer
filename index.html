@@ -27,6 +27,26 @@
       content="Train your Go board memory with a focused visualization exercise: study a 9x9 position, hide it, then rebuild the stones from memory."
     />
     <meta name="twitter:image" content="%BASE_URL%og-image.png" />
+    <script>
+      (() => {
+        try {
+          const raw = localStorage.getItem("go-visualization-trainer-settings-v1");
+          const theme = raw ? JSON.parse(raw).theme : "dark";
+          const resolvedTheme =
+            theme === "system"
+              ? window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark"
+              : theme === "light"
+                ? "light"
+                : "dark";
+          document.documentElement.classList.add(`theme-${resolvedTheme}`);
+          document.documentElement.style.colorScheme = resolvedTheme;
+        } catch {
+          document.documentElement.classList.add("theme-dark");
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

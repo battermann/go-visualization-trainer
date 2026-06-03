@@ -1,13 +1,25 @@
-import { FaMoon, FaSun, FaTimes, FaVolumeUp } from "react-icons/fa";
+import { FaDesktop, FaMoon, FaSun, FaTimes, FaVolumeUp } from "react-icons/fa";
+import { ThemePreference } from "../types";
 
 type SettingsDialogProps = {
   open: boolean;
+  theme: ThemePreference;
+  onThemeChange: (theme: ThemePreference) => void;
   onClose: () => void;
 };
 
-export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
+export function SettingsDialog({
+  open,
+  theme,
+  onThemeChange,
+  onClose,
+}: SettingsDialogProps) {
   if (!open) {
     return null;
+  }
+
+  function themeButtonClass(value: ThemePreference, extraClass = ""): string {
+    return [theme === value ? "active" : "", extraClass].filter(Boolean).join(" ");
   }
 
   return (
@@ -32,15 +44,33 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
         <div className="settings-section">
           <h3>Appearance</h3>
           <div className="segmented-control" aria-label="Theme">
-            <button type="button" className="btn-with-icon">
+            <button
+              type="button"
+              className={themeButtonClass("light", "btn-with-icon")}
+              aria-pressed={theme === "light"}
+              onClick={() => onThemeChange("light")}
+            >
               <FaSun aria-hidden="true" />
               Light
             </button>
-            <button type="button" className="active btn-with-icon">
+            <button
+              type="button"
+              className={themeButtonClass("dark", "btn-with-icon")}
+              aria-pressed={theme === "dark"}
+              onClick={() => onThemeChange("dark")}
+            >
               <FaMoon aria-hidden="true" />
               Dark
             </button>
-            <button type="button">System</button>
+            <button
+              type="button"
+              className={themeButtonClass("system", "btn-with-icon")}
+              aria-pressed={theme === "system"}
+              onClick={() => onThemeChange("system")}
+            >
+              <FaDesktop aria-hidden="true" />
+              System
+            </button>
           </div>
         </div>
 

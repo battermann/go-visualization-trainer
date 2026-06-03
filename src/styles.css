@@ -1106,6 +1106,228 @@ a:hover {
   min-height: 44px;
 }
 
+:root.theme-light {
+  color: #20242a;
+  background: #f4efe7;
+  color-scheme: light;
+}
+
+:root.theme-light body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(63, 120, 179, 0.1), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(196, 132, 45, 0.12), transparent 24%),
+    #f4efe7;
+  color: #20242a;
+}
+
+:root.theme-light .app-header {
+  border-color: rgba(88, 102, 120, 0.18);
+  background: rgba(255, 251, 244, 0.82);
+  box-shadow: 0 12px 28px rgba(93, 70, 39, 0.12);
+}
+
+:root.theme-light .app-brand,
+:root.theme-light .nav-button,
+:root.theme-light .nav-icon-button {
+  border-color: transparent;
+  background: transparent;
+  color: #20242a;
+}
+
+:root.theme-light .app-brand:not(:disabled):hover,
+:root.theme-light .nav-button:not(:disabled):hover,
+:root.theme-light .nav-icon-button:not(:disabled):hover {
+  border-color: rgba(88, 102, 120, 0.16);
+  background: rgba(63, 120, 179, 0.08);
+}
+
+:root.theme-light .panel,
+:root.theme-light .home-hero,
+:root.theme-light .modal-dialog {
+  border-color: #ded0bd;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(196, 132, 45, 0.1), transparent 26%),
+    #fffaf3;
+  box-shadow: 0 16px 34px rgba(93, 70, 39, 0.12);
+}
+
+:root.theme-light select,
+:root.theme-light button {
+  border-color: #cdbfae;
+  background: #fbf6ee;
+  color: #20242a;
+}
+
+:root.theme-light button:not(:disabled):hover {
+  border-color: #b6a48e;
+  background: #f0e7da;
+}
+
+:root.theme-light .primary {
+  border-color: #346696;
+  background: #3f78b3;
+  color: #fff;
+}
+
+:root.theme-light .primary:not(:disabled):hover {
+  border-color: #3f78b3;
+  background: #4b86c2;
+}
+
+:root.theme-light .home-subtitle,
+:root.theme-light .home-section-note,
+:root.theme-light .source-credit,
+:root.theme-light .empty-state,
+:root.theme-light .timer,
+:root.theme-light .color-toggle button,
+:root.theme-light .board-wrap h3,
+:root.theme-light .modal-dialog p,
+:root.theme-light .setting-toggle small,
+:root.theme-light .volume-control span {
+  color: #586578;
+}
+
+:root.theme-light .screen-facts,
+:root.theme-light .rules-table-wrap {
+  border-color: #ded0bd;
+  background: #ded0bd;
+}
+
+:root.theme-light .screen-facts div,
+:root.theme-light .progress-tile,
+:root.theme-light .rules-box,
+:root.theme-light .setting-toggle,
+:root.theme-light .board-style-option {
+  border-color: #ded0bd;
+  background: #fff7ed;
+}
+
+:root.theme-light .screen-facts dt,
+:root.theme-light .progress-label,
+:root.theme-light .recommendation-band span,
+:root.theme-light .settings-section h3 {
+  color: #586578;
+}
+
+:root.theme-light .screen-facts dd,
+:root.theme-light .progress-tile strong,
+:root.theme-light .recommendation-band strong,
+:root.theme-light .timer strong,
+:root.theme-light .score-callout strong,
+:root.theme-light .settings-section h3 {
+  color: #20242a;
+}
+
+:root.theme-light .recommended-badge,
+:root.theme-light .score-callout {
+  border-color: rgba(63, 120, 179, 0.22);
+  background: rgba(63, 120, 179, 0.1);
+  color: #244e77;
+}
+
+:root.theme-light .recommendation-band {
+  border-color: rgba(63, 120, 179, 0.18);
+  background:
+    radial-gradient(circle at 94% 20%, rgba(63, 120, 179, 0.1), transparent 26%),
+    #fff7ed;
+}
+
+:root.theme-light .recommendation-band p {
+  color: #4a5666;
+}
+
+:root.theme-light .rules-table th,
+:root.theme-light .rules-table td {
+  border-color: #ded0bd;
+}
+
+:root.theme-light .rules-table th {
+  background: #f0e7da;
+}
+
+:root.theme-light .rules-table td {
+  background: #fffaf3;
+}
+
+:root.theme-light .rules-table-wrap::after {
+  box-shadow: -18px 0 20px rgba(255, 250, 243, 0.9);
+}
+
+:root.theme-light .timer,
+:root.theme-light .color-toggle,
+:root.theme-light .segmented-control {
+  border-color: #cdbfae;
+  background: #fffaf3;
+}
+
+:root.theme-light .color-toggle button,
+:root.theme-light .segmented-control button {
+  border-color: transparent;
+  background: transparent;
+}
+
+:root.theme-light .color-toggle button.active,
+:root.theme-light .segmented-control button.active,
+:root.theme-light .board-style-option.active {
+  border-color: rgba(63, 120, 179, 0.34);
+  background: rgba(63, 120, 179, 0.12);
+  color: #20242a;
+  box-shadow: inset 0 0 0 1px rgba(63, 120, 179, 0.08);
+}
+
+:root.theme-light .go-board {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 230, 170, 0.22),
+    inset 0 0 26px rgba(92, 54, 18, 0.2),
+    0 12px 24px rgba(93, 70, 39, 0.18);
+}
+
+:root.theme-light .home-board-preview .go-board {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 230, 170, 0.22),
+    inset 0 0 22px rgba(92, 54, 18, 0.18),
+    0 16px 30px rgba(93, 70, 39, 0.18);
+}
+
+:root.theme-light .board-cell {
+  border: none;
+  background: transparent;
+}
+
+:root.theme-light .board-cell.editable:hover {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0 9%, transparent 10%);
+}
+
+:root.theme-light .summary-box,
+:root.theme-light .mistake-list li,
+:root.theme-light .settings-section {
+  border-color: #ded0bd;
+}
+
+:root.theme-light .modal-backdrop {
+  background: rgba(43, 35, 26, 0.38);
+}
+
+:root.theme-light .warning {
+  border-color: rgba(167, 88, 22, 0.26);
+  background: rgba(167, 88, 22, 0.08);
+  color: #934b10;
+}
+
+:root.theme-light .success {
+  border-color: rgba(41, 128, 76, 0.24);
+  background: rgba(41, 128, 76, 0.08);
+  color: #1e7a49;
+}
+
+:root.theme-light a {
+  color: #276ba7;
+}
+
+:root.theme-light a:hover {
+  color: #174f82;
+}
+
 .level-preview-grid {
   margin-top: 16px;
   display: grid;
