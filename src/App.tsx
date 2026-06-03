@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { AppHeader } from "./components/AppHeader";
 import { ConfirmDialog } from "./components/ConfirmDialog";
 import { HomeScreen } from "./components/HomeScreen";
 import { LevelOverview } from "./components/LevelOverview";
 import { LevelSummaryScreen } from "./components/LevelSummaryScreen";
 import { MemorizationScreen } from "./components/MemorizationScreen";
+import { MobileMenuDialog } from "./components/MobileMenuDialog";
 import { ProblemResultScreen } from "./components/ProblemResultScreen";
 import { ReconstructionScreen } from "./components/ReconstructionScreen";
+import { SettingsDialog } from "./components/SettingsDialog";
 import { LEVELS } from "./data/levels";
 import { getRecommendedStartLevel } from "./logic/rankMapping";
 import { runScoringSelfCheck, scoreProblem } from "./logic/scoring";
@@ -204,6 +207,8 @@ export default function App() {
   const [lastResultIndex, setLastResultIndex] = useState<number | null>(null);
   const [summarySaved, setSummarySaved] = useState(false);
   const [pendingExitRoute, setPendingExitRoute] = useState<Route | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const sessionRef = useRef<TrainingSession | null>(null);
   const appStateRef = useRef<AppState>(appState);
 
@@ -545,6 +550,7 @@ export default function App() {
   }
 
   function backHome(): void {
+    setMobileMenuOpen(false);
     if (session && isActiveTrainingState(appState)) {
       setPendingExitRoute({ screen: "home" });
       return;
@@ -552,6 +558,18 @@ export default function App() {
     setSession(null);
     setAppState("home");
     pushRoute({ screen: "home" });
+  }
+
+  function chooseSelectedLevel(): void {
+    setMobileMenuOpen(false);
+    if (session && isActiveTrainingState(appState)) {
+      setPendingExitRoute({ screen: "level-overview", level: selectedLevel });
+      return;
+    }
+
+    setSession(null);
+    setAppState("level-overview");
+    pushRoute({ screen: "level-overview", level: selectedLevel });
   }
 
   function cancelTrainingExit(): void {
@@ -589,97 +607,122 @@ export default function App() {
     session?.level === (LEVELS[LEVELS.length - 1]?.level ?? null) &&
     totalMistakes === 0 &&
     hasConsecutivePerfectDays(progress.level10PerfectDates);
+  const showHeader = appState !== "pause";
+  const isTrainingFlow = session !== null && isActiveTrainingState(appState);
 
   return (
-    <main className="app-shell">
-      {appState === "home" ? (
-        <HomeScreen
-          selectedRank={selectedRank}
-          recommendedLevel={recommendedLevel}
+    <div className="app-shell">
+      {showHeader ? (
+        <AppHeader
+          isTraining={isTrainingFlow}
           selectedLevel={selectedLevel}
-          levelCount={LEVELS.length}
-          sessionCount={progress.sessions.length}
-          lastSession={lastSession}
-          onRankChange={handleRankChange}
-          onLevelChange={handleLevelChange}
-          onStart={startOverview}
+          onHome={backHome}
+          onChooseLevel={chooseSelectedLevel}
+          onOpenSettings={() => setSettingsOpen(true)}
+          onOpenMenu={() => setMobileMenuOpen(true)}
         />
       ) : null}
 
-      {appState === "level-overview" ? (
-        <LevelOverview
-          level={currentLevelConfig}
-          onStartTraining={startLevel}
-          onBack={backHome}
-        />
-      ) : null}
+      <main className="screen-shell">
+        {appState === "home" ? (
+          <HomeScreen
+            selectedRank={selectedRank}
+            recommendedLevel={recommendedLevel}
+            selectedLevel={selectedLevel}
+            levelCount={LEVELS.length}
+            sessionCount={progress.sessions.length}
+            lastSession={lastSession}
+            onRankChange={handleRankChange}
+            onLevelChange={handleLevelChange}
+            onStart={startOverview}
+          />
+        ) : null}
 
-      {appState === "memorizing" && currentProblem && session ? (
-        <MemorizationScreen
-          problem={currentProblem}
-          problemIndex={session.currentProblemIndex}
-          problemCount={session.problems.length}
-          remainingSeconds={session.remainingSeconds}
-          onMemorized={handleMemorized}
-          onBackHome={backHome}
-        />
-      ) : null}
+        {appState === "level-overview" ? (
+          <LevelOverview
+            level={currentLevelConfig}
+            onStartTraining={startLevel}
+            onBack={backHome}
+          />
+        ) : null}
 
-      {appState === "pause" ? (
-        <section className="panel pause-panel">
-          <h1>Close your eyes</h1>
-          <p key={pauseCountdown} className="pause-count">
-            {pauseCountdown}
-          </p>
-        </section>
-      ) : null}
+        {appState === "memorizing" && currentProblem && session ? (
+          <MemorizationScreen
+            problem={currentProblem}
+            problemIndex={session.currentProblemIndex}
+            problemCount={session.problems.length}
+            remainingSeconds={session.remainingSeconds}
+            onMemorized={handleMemorized}
+            onBackHome={backHome}
+          />
+        ) : null}
 
-      {appState === "reconstructing" && currentProblem && session ? (
-        <ReconstructionScreen
-          boardSize={currentProblem.boardSize}
-          problemIndex={session.currentProblemIndex}
-          problemCount={session.problems.length}
-          remainingSeconds={session.remainingSeconds}
-          timeExpired={session.timeExpired}
-          stones={session.userStones}
-          selectedColor={selectedStoneColor}
-          onSelectedColorChange={setSelectedStoneColor}
-          onStonesChange={handleUserStonesChange}
-          onUndo={handleUndo}
-          onClear={handleClear}
-          onSubmit={handleSubmitProblem}
-          onBackHome={backHome}
-        />
-      ) : null}
+        {appState === "pause" ? (
+          <section className="panel pause-panel">
+            <h1>Close your eyes</h1>
+            <p key={pauseCountdown} className="pause-count">
+              {pauseCountdown}
+            </p>
+          </section>
+        ) : null}
 
-      {appState === "problem-result" && session && lastResultIndex !== null ? (
-        <ProblemResultScreen
-          problem={session.problems[lastResultIndex]}
-          problemIndex={lastResultIndex}
-          problemCount={session.problems.length}
-          result={session.results[lastResultIndex]}
-          totalMistakes={totalMistakes}
-          remainingSeconds={session.remainingSeconds}
-          onContinue={handleContinueFromResult}
-          onBackHome={backHome}
-        />
-      ) : null}
+        {appState === "reconstructing" && currentProblem && session ? (
+          <ReconstructionScreen
+            boardSize={currentProblem.boardSize}
+            problemIndex={session.currentProblemIndex}
+            problemCount={session.problems.length}
+            remainingSeconds={session.remainingSeconds}
+            timeExpired={session.timeExpired}
+            stones={session.userStones}
+            selectedColor={selectedStoneColor}
+            onSelectedColorChange={setSelectedStoneColor}
+            onStonesChange={handleUserStonesChange}
+            onUndo={handleUndo}
+            onClear={handleClear}
+            onSubmit={handleSubmitProblem}
+            onBackHome={backHome}
+          />
+        ) : null}
 
-      {appState === "level-summary" && session ? (
-        <LevelSummaryScreen
-          level={currentLevelConfig}
-          totalMistakes={totalMistakes}
-          timeUsedSeconds={timeUsedSeconds}
-          problemCount={session.problems.length}
-          recommendedLevel={levelRecommendation}
-          recommendationLabel={recommendationLabel}
-          remainingSeconds={session.remainingSeconds}
-          showWorldChampionshipMessage={showWorldChampionshipMessage}
-          onRetry={retrySameLevel}
-          onGoRecommended={goRecommendedLevel}
-          onBackHome={backHome}
-        />
-      ) : null}
+        {appState === "problem-result" && session && lastResultIndex !== null ? (
+          <ProblemResultScreen
+            problem={session.problems[lastResultIndex]}
+            problemIndex={lastResultIndex}
+            problemCount={session.problems.length}
+            result={session.results[lastResultIndex]}
+            totalMistakes={totalMistakes}
+            remainingSeconds={session.remainingSeconds}
+            onContinue={handleContinueFromResult}
+            onBackHome={backHome}
+          />
+        ) : null}
+
+        {appState === "level-summary" && session ? (
+          <LevelSummaryScreen
+            level={currentLevelConfig}
+            totalMistakes={totalMistakes}
+            timeUsedSeconds={timeUsedSeconds}
+            problemCount={session.problems.length}
+            recommendedLevel={levelRecommendation}
+            recommendationLabel={recommendationLabel}
+            remainingSeconds={session.remainingSeconds}
+            showWorldChampionshipMessage={showWorldChampionshipMessage}
+            onRetry={retrySameLevel}
+            onGoRecommended={goRecommendedLevel}
+            onBackHome={backHome}
+          />
+        ) : null}
+      </main>
+
+      <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <MobileMenuDialog
+        open={mobileMenuOpen}
+        selectedLevel={selectedLevel}
+        onClose={() => setMobileMenuOpen(false)}
+        onHome={backHome}
+        onChooseLevel={chooseSelectedLevel}
+        onOpenSettings={() => setSettingsOpen(true)}
+      />
       <ConfirmDialog
         open={pendingExitRoute !== null}
         title="Leave training?"
@@ -689,6 +732,6 @@ export default function App() {
         onCancel={cancelTrainingExit}
         onConfirm={confirmTrainingExit}
       />
-    </main>
+    </div>
   );
 }
