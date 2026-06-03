@@ -32,7 +32,9 @@
       (() => {
         try {
           const raw = localStorage.getItem("go-visualization-trainer-settings-v1");
-          const theme = raw ? JSON.parse(raw).theme : "dark";
+          const settings = raw ? JSON.parse(raw) : {};
+          const theme = settings.theme ?? "dark";
+          const boardStyle = settings.boardStyle === "original" ? "original" : "current";
           const resolvedTheme =
             theme === "system"
               ? window.matchMedia("(prefers-color-scheme: light)").matches
@@ -42,9 +44,11 @@
                 ? "light"
                 : "dark";
           document.documentElement.classList.add(`theme-${resolvedTheme}`);
+          document.documentElement.classList.add(`board-style-${boardStyle}`);
           document.documentElement.style.colorScheme = resolvedTheme;
         } catch {
           document.documentElement.classList.add("theme-dark");
+          document.documentElement.classList.add("board-style-current");
         }
       })();
     </script>

@@ -248,6 +248,17 @@ export default function App() {
   }, [settings]);
 
   useEffect(() => {
+    document.documentElement.classList.toggle(
+      "board-style-current",
+      settings.boardStyle === "current",
+    );
+    document.documentElement.classList.toggle(
+      "board-style-original",
+      settings.boardStyle === "original",
+    );
+  }, [settings.boardStyle]);
+
+  useEffect(() => {
     prepareStoneClickSound(settings.soundVolume);
   }, [settings.soundVolume]);
 
@@ -768,12 +779,16 @@ export default function App() {
         theme={settings.theme}
         soundEnabled={settings.soundEnabled}
         soundVolume={settings.soundVolume}
+        boardStyle={settings.boardStyle}
         onThemeChange={(theme) => setSettings((current) => ({ ...current, theme }))}
         onSoundEnabledChange={(soundEnabled) =>
           setSettings((current) => ({ ...current, soundEnabled }))
         }
         onSoundVolumeChange={(soundVolume) =>
           setSettings((current) => ({ ...current, soundVolume }))
+        }
+        onBoardStyleChange={(boardStyle) =>
+          setSettings((current) => ({ ...current, boardStyle }))
         }
         onClose={() => setSettingsOpen(false)}
       />

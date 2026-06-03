@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   theme: "dark",
   soundEnabled: true,
   soundVolume: 0.7,
+  boardStyle: "current",
 };
 
 function normalizeVolume(value: unknown): number {
@@ -62,6 +63,10 @@ export function loadSettings(): AppSettings {
           ? parsed.soundEnabled
           : DEFAULT_SETTINGS.soundEnabled,
       soundVolume: normalizeVolume(parsed.soundVolume),
+      boardStyle:
+        parsed.boardStyle === "current" || parsed.boardStyle === "original"
+          ? parsed.boardStyle
+          : DEFAULT_SETTINGS.boardStyle,
     };
   } catch {
     return { ...DEFAULT_SETTINGS };

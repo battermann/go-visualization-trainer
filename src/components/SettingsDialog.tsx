@@ -1,15 +1,18 @@
 import { FaDesktop, FaMoon, FaSun, FaTimes, FaVolumeUp } from "react-icons/fa";
+import { GoBoard } from "./GoBoard";
 import { playStoneClickWithSettings } from "../logic/sound";
-import { ThemePreference } from "../types";
+import { BoardStylePreference, ThemePreference } from "../types";
 
 type SettingsDialogProps = {
   open: boolean;
   theme: ThemePreference;
   soundEnabled: boolean;
   soundVolume: number;
+  boardStyle: BoardStylePreference;
   onThemeChange: (theme: ThemePreference) => void;
   onSoundEnabledChange: (enabled: boolean) => void;
   onSoundVolumeChange: (volume: number) => void;
+  onBoardStyleChange: (style: BoardStylePreference) => void;
   onClose: () => void;
 };
 
@@ -18,9 +21,11 @@ export function SettingsDialog({
   theme,
   soundEnabled,
   soundVolume,
+  boardStyle,
   onThemeChange,
   onSoundEnabledChange,
   onSoundVolumeChange,
+  onBoardStyleChange,
   onClose,
 }: SettingsDialogProps) {
   if (!open) {
@@ -36,6 +41,19 @@ export function SettingsDialog({
   function themeButtonClass(value: ThemePreference, extraClass = ""): string {
     return [theme === value ? "active" : "", extraClass].filter(Boolean).join(" ");
   }
+
+  function boardStyleButtonClass(value: BoardStylePreference): string {
+    return ["board-style-option", boardStyle === value ? "active" : ""]
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  const previewStones = [
+    { x: 0, y: 0, color: "black" as const },
+    { x: 2, y: 1, color: "white" as const },
+    { x: 3, y: 0, color: "black" as const },
+    { x: 1, y: 3, color: "white" as const },
+  ];
 
   return (
     <div className="modal-backdrop" role="presentation">
@@ -92,23 +110,27 @@ export function SettingsDialog({
         <div className="settings-section">
           <h3>Board style</h3>
           <div className="board-style-grid">
-            <button type="button" className="board-style-option active">
-              <span className="board-style-swatch board-style-classic" aria-hidden="true">
-                <span />
+            <button
+              type="button"
+              className={boardStyleButtonClass("current")}
+              aria-pressed={boardStyle === "current"}
+              onClick={() => onBoardStyleChange("current")}
+            >
+              <span className="board-style-preview board-style-current-preview" aria-hidden="true">
+                <GoBoard size={4} stones={previewStones} />
               </span>
-              <span>Classic wood</span>
+              <span>Polished Wood</span>
             </button>
-            <button type="button" className="board-style-option">
-              <span className="board-style-swatch board-style-night" aria-hidden="true">
-                <span />
+            <button
+              type="button"
+              className={boardStyleButtonClass("original")}
+              aria-pressed={boardStyle === "original"}
+              onClick={() => onBoardStyleChange("original")}
+            >
+              <span className="board-style-preview board-style-original-preview" aria-hidden="true">
+                <GoBoard size={4} stones={previewStones} />
               </span>
-              <span>Night wood</span>
-            </button>
-            <button type="button" className="board-style-option">
-              <span className="board-style-swatch board-style-paper" aria-hidden="true">
-                <span />
-              </span>
-              <span>Paper</span>
+              <span>Classic Flat</span>
             </button>
           </div>
         </div>

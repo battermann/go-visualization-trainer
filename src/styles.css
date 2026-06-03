@@ -975,7 +975,7 @@ a:hover {
 
 .board-style-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -997,59 +997,83 @@ a:hover {
   box-shadow: inset 0 0 0 1px rgba(143, 190, 255, 0.12);
 }
 
-.board-style-swatch {
-  position: relative;
-  width: min(100%, 86px);
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 6px;
+.board-style-preview {
+  display: block;
+  width: min(100%, 94px);
+  pointer-events: none;
+}
+
+.board-style-preview .board-wrap {
+  width: 100%;
+}
+
+.board-style-preview .go-board {
+  margin-bottom: 0;
+}
+
+.board-style-current-preview .go-board {
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 236, 176, 0.26), transparent 24%),
+    radial-gradient(circle at 78% 82%, rgba(122, 73, 22, 0.18), transparent 28%),
+    repeating-linear-gradient(
+      8deg,
+      rgba(92, 54, 18, 0.12) 0,
+      rgba(92, 54, 18, 0.12) 2px,
+      transparent 2px,
+      transparent 13px
+    ),
+    linear-gradient(135deg, #e0b06d 0%, #d0a05f 48%, #c7924f 100%);
+  border: none;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 230, 170, 0.22),
+    inset 0 0 26px rgba(92, 54, 18, 0.22),
     0 8px 16px rgba(0, 0, 0, 0.22);
 }
 
-.board-style-swatch::before,
-.board-style-swatch::after {
-  content: "";
-  position: absolute;
-  inset: 18%;
+.board-style-original-preview .go-board {
+  background: #d7a864;
+  border: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.22);
+}
+
+.board-style-current-preview .stone {
+  animation: stone-settle 130ms cubic-bezier(0.2, 0.9, 0.25, 1.25) both;
+}
+
+.board-style-current-preview .stone.black {
   background:
-    linear-gradient(to right, transparent 0 48%, rgba(63, 40, 13, 0.72) 48% 52%, transparent 52%),
-    linear-gradient(to bottom, transparent 0 48%, rgba(63, 40, 13, 0.72) 48% 52%, transparent 52%);
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.18), transparent 18%),
+    radial-gradient(circle at 58% 68%, #050505 0%, #111 58%, #222 100%);
+  box-shadow:
+    inset -5px -7px 10px rgba(0, 0, 0, 0.58),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.46);
 }
 
-.board-style-swatch span {
-  position: absolute;
-  width: 20%;
-  aspect-ratio: 1;
-  right: 22%;
-  bottom: 22%;
-  z-index: 1;
-  border-radius: 50%;
-  background: #0c0d0f;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+.board-style-current-preview .stone.white {
+  background:
+    radial-gradient(circle at 34% 26%, #fff 0%, #fff 22%, #f4f4f4 52%, #d6d6d6 100%);
+  border: none;
+  box-shadow:
+    inset -5px -7px 10px rgba(120, 120, 120, 0.24),
+    inset 3px 3px 7px rgba(255, 255, 255, 0.86),
+    0 2px 5px rgba(0, 0, 0, 0.38),
+    0 0 1px rgba(30, 24, 18, 0.55);
 }
 
-.board-style-classic {
-  background: linear-gradient(135deg, #e0b06d, #c7924f);
+.board-style-original-preview .stone {
+  animation: none;
 }
 
-.board-style-night {
-  background: linear-gradient(135deg, #7b5630, #2d2f35);
+.board-style-original-preview .stone.black {
+  background: #121212;
+  box-shadow: none;
 }
 
-.board-style-night::before,
-.board-style-night::after {
-  opacity: 0.8;
-}
-
-.board-style-paper {
-  background: linear-gradient(135deg, #e8dec8, #cfc3a8);
-}
-
-.board-style-paper::before,
-.board-style-paper::after {
-  opacity: 0.55;
+.board-style-original-preview .stone.white {
+  background: #f4f4f4;
+  border: 1px solid #000;
+  box-shadow: none;
 }
 
 .setting-toggle {
@@ -1335,6 +1359,82 @@ a:hover {
 
 :root.theme-light a:hover {
   color: #174f82;
+}
+
+:root.board-style-original .go-board {
+  background: #d7a864;
+  border: none;
+  box-shadow: none;
+}
+
+:root.board-style-original .home-board-preview .go-board {
+  box-shadow: none;
+}
+
+:root.board-style-original .stone {
+  animation: none;
+  transition:
+    transform 110ms ease,
+    opacity 110ms ease;
+}
+
+:root.board-style-original .stone.black {
+  background: #121212;
+  box-shadow: none;
+}
+
+:root.board-style-original .stone.white {
+  background: #f4f4f4;
+  border: 1px solid #000;
+  box-shadow: none;
+}
+
+:root.board-style-original .stone.ghost {
+  opacity: 0.45;
+}
+
+:root.board-style-original .board-style-current-preview .go-board {
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 236, 176, 0.26), transparent 24%),
+    radial-gradient(circle at 78% 82%, rgba(122, 73, 22, 0.18), transparent 28%),
+    repeating-linear-gradient(
+      8deg,
+      rgba(92, 54, 18, 0.12) 0,
+      rgba(92, 54, 18, 0.12) 2px,
+      transparent 2px,
+      transparent 13px
+    ),
+    linear-gradient(135deg, #e0b06d 0%, #d0a05f 48%, #c7924f 100%);
+  border: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 230, 170, 0.22),
+    inset 0 0 26px rgba(92, 54, 18, 0.22),
+    0 8px 16px rgba(0, 0, 0, 0.22);
+}
+
+:root.board-style-original .board-style-current-preview .stone {
+  animation: stone-settle 130ms cubic-bezier(0.2, 0.9, 0.25, 1.25) both;
+}
+
+:root.board-style-original .board-style-current-preview .stone.black {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.18), transparent 18%),
+    radial-gradient(circle at 58% 68%, #050505 0%, #111 58%, #222 100%);
+  box-shadow:
+    inset -5px -7px 10px rgba(0, 0, 0, 0.58),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.46);
+}
+
+:root.board-style-original .board-style-current-preview .stone.white {
+  background:
+    radial-gradient(circle at 34% 26%, #fff 0%, #fff 22%, #f4f4f4 52%, #d6d6d6 100%);
+  border: none;
+  box-shadow:
+    inset -5px -7px 10px rgba(120, 120, 120, 0.24),
+    inset 3px 3px 7px rgba(255, 255, 255, 0.86),
+    0 2px 5px rgba(0, 0, 0, 0.38),
+    0 0 1px rgba(30, 24, 18, 0.55);
 }
 
 .level-preview-grid {

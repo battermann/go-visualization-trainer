@@ -143,39 +143,41 @@ export function GoBoard({
         .filter(Boolean)
         .join(" ");
 
-      cells.push(
-        <button
-          key={key}
-          type="button"
-          className={className}
-          style={
-            showCoordinates
-              ? {
-                  gridColumn: x + 2,
-                  gridRow: y + 2,
-                }
-              : undefined
+      const cellStyle = showCoordinates
+        ? {
+            gridColumn: x + 2,
+            gridRow: y + 2,
           }
-          onClick={() => updateAt(x, y)}
-          onMouseEnter={() => {
-            if (editable) {
-              setHoveredKey(key);
-            }
-          }}
-          onMouseLeave={() => {
-            if (editable) {
-              setHoveredKey((current) => (current === key ? null : current));
-            }
-          }}
-          disabled={!editable}
-          aria-label={`Intersection ${String.fromCharCode(65 + x)}${size - y}`}
-        >
+        : undefined;
+      const cellContent = (
+        <>
           {stone ? <span className={stoneClass(stone.color)} /> : null}
           {!stone && editable && hoveredKey === key ? (
             <span className={`${stoneClass(selectedColor)} ghost`} />
           ) : null}
           {highlight ? <span className="highlight-label">{highlight.label}</span> : null}
-        </button>,
+        </>
+      );
+
+      cells.push(
+        editable ? (
+          <button
+            key={key}
+            type="button"
+            className={className}
+            style={cellStyle}
+            onClick={() => updateAt(x, y)}
+            onMouseEnter={() => setHoveredKey(key)}
+            onMouseLeave={() => setHoveredKey((current) => (current === key ? null : current))}
+            aria-label={`Intersection ${String.fromCharCode(65 + x)}${size - y}`}
+          >
+            {cellContent}
+          </button>
+        ) : (
+          <div key={key} className={className} style={cellStyle}>
+            {cellContent}
+          </div>
+        ),
       );
     }
   }

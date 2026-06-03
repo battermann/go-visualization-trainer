@@ -1,11 +1,13 @@
 export type StoneColor = "black" | "white";
 
 export type ThemePreference = "light" | "dark" | "system";
+export type BoardStylePreference = "current" | "original";
 
 export type AppSettings = {
   theme: ThemePreference;
   soundEnabled: boolean;
   soundVolume: number;
+  boardStyle: BoardStylePreference;
 };
 
 export type Stone = {
