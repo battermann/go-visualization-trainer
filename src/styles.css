@@ -40,33 +40,14 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.app-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  padding: 5px 8px;
-  border-color: transparent;
-  background: transparent;
-  color: #f3f6fb;
-  font-weight: 800;
-}
-
-.app-brand:not(:disabled):hover {
-  border-color: rgba(143, 190, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.app-brand span:last-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .app-nav {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.desktop-nav-secondary {
+  margin-left: auto;
 }
 
 .nav-button,
@@ -1159,7 +1140,6 @@ a:hover {
   box-shadow: 0 12px 28px rgba(93, 70, 39, 0.12);
 }
 
-:root.theme-light .app-brand,
 :root.theme-light .nav-button,
 :root.theme-light .nav-icon-button {
   border-color: transparent;
@@ -1167,7 +1147,6 @@ a:hover {
   color: #20242a;
 }
 
-:root.theme-light .app-brand:not(:disabled):hover,
 :root.theme-light .nav-button:not(:disabled):hover,
 :root.theme-light .nav-icon-button:not(:disabled):hover {
   border-color: rgba(88, 102, 120, 0.16);
@@ -1637,10 +1616,6 @@ a:hover {
 }
 
 @media (max-width: 480px) {
-  .app-brand {
-    max-width: calc(100vw - 92px);
-  }
-
   .settings-dialog {
     padding: 16px;
   }

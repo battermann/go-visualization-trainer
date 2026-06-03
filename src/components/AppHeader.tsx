@@ -19,10 +19,6 @@ export function AppHeader({
 }: AppHeaderProps) {
   return (
     <header className="app-header">
-      <button type="button" className="app-brand" onClick={onHome}>
-        <span>Go Visualization Trainer</span>
-      </button>
-
       <nav className="app-nav desktop-nav" aria-label="App navigation">
         {!isTraining ? (
           <>
@@ -36,6 +32,9 @@ export function AppHeader({
             </button>
           </>
         ) : null}
+      </nav>
+
+      <nav className="app-nav desktop-nav desktop-nav-secondary" aria-label="App settings">
         <button
           type="button"
           className="nav-icon-button"
