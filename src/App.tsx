@@ -12,6 +12,7 @@ import { SettingsDialog } from "./components/SettingsDialog";
 import { LEVELS } from "./data/levels";
 import { getRecommendedStartLevel } from "./logic/rankMapping";
 import { runScoringSelfCheck, scoreProblem } from "./logic/scoring";
+import { prepareStoneClickSound } from "./logic/sound";
 import {
   appendSession,
   hasConsecutivePerfectDays,
@@ -245,6 +246,10 @@ export default function App() {
   useEffect(() => {
     saveSettings(settings);
   }, [settings]);
+
+  useEffect(() => {
+    prepareStoneClickSound(settings.soundVolume);
+  }, [settings.soundVolume]);
 
   useEffect(() => {
     function applyTheme(): void {
