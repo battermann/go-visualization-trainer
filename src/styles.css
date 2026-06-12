@@ -79,6 +79,27 @@ body {
   display: block;
 }
 
+.app-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.footer-link {
+  padding: 4px 6px;
+  border-color: transparent;
+  background: transparent;
+  color: #9faabd;
+  font-size: 0.9rem;
+}
+
+.footer-link:not(:disabled):hover {
+  border-color: transparent;
+  background: transparent;
+  color: #dcecff;
+  text-decoration: underline;
+}
+
 .panel {
   background:
     radial-gradient(circle at 92% 0%, rgba(224, 176, 109, 0.08), transparent 26%),
@@ -921,6 +942,25 @@ a:hover {
   width: min(100%, 560px);
 }
 
+.privacy-dialog {
+  width: min(100%, 560px);
+}
+
+.privacy-content {
+  display: grid;
+  gap: 10px;
+}
+
+.privacy-content h3 {
+  margin: 6px 0 0;
+  color: #f3f6fb;
+  font-size: 0.96rem;
+}
+
+.privacy-content p {
+  margin: 0;
+}
+
 .settings-section {
   padding: 14px 0;
   border-top: 1px solid #2c3644;
@@ -1190,6 +1230,7 @@ a:hover {
 :root.theme-light .home-section-note,
 :root.theme-light .source-credit,
 :root.theme-light .empty-state,
+:root.theme-light .footer-link,
 :root.theme-light .timer,
 :root.theme-light .color-toggle button,
 :root.theme-light .board-wrap h3,
@@ -1217,6 +1258,7 @@ a:hover {
 :root.theme-light .screen-facts dt,
 :root.theme-light .progress-label,
 :root.theme-light .recommendation-band span,
+:root.theme-light .privacy-content h3,
 :root.theme-light .settings-section h3 {
   color: #586578;
 }
@@ -1226,6 +1268,7 @@ a:hover {
 :root.theme-light .recommendation-band strong,
 :root.theme-light .timer strong,
 :root.theme-light .score-callout strong,
+:root.theme-light .privacy-dialog h2,
 :root.theme-light .settings-section h3 {
   color: #20242a;
 }
@@ -1338,6 +1381,10 @@ a:hover {
 
 :root.theme-light a:hover {
   color: #174f82;
+}
+
+:root.theme-light .footer-link:not(:disabled):hover {
+  color: #244e77;
 }
 
 :root.board-style-original .go-board {

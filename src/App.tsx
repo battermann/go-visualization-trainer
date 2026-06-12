@@ -6,6 +6,7 @@ import { LevelOverview } from "./components/LevelOverview";
 import { LevelSummaryScreen } from "./components/LevelSummaryScreen";
 import { MemorizationScreen } from "./components/MemorizationScreen";
 import { MobileMenuDialog } from "./components/MobileMenuDialog";
+import { PrivacyDialog } from "./components/PrivacyDialog";
 import { ProblemResultScreen } from "./components/ProblemResultScreen";
 import { ReconstructionScreen } from "./components/ReconstructionScreen";
 import { SettingsDialog } from "./components/SettingsDialog";
@@ -228,6 +229,7 @@ export default function App() {
   const [summarySaved, setSummarySaved] = useState(false);
   const [pendingExitRoute, setPendingExitRoute] = useState<Route | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const sessionRef = useRef<TrainingSession | null>(null);
   const appStateRef = useRef<AppState>(appState);
@@ -774,6 +776,12 @@ export default function App() {
         ) : null}
       </main>
 
+      <footer className="app-footer">
+        <button type="button" className="footer-link" onClick={() => setPrivacyOpen(true)}>
+          Privacy / Datenschutz
+        </button>
+      </footer>
+
       <SettingsDialog
         open={settingsOpen}
         theme={settings.theme}
@@ -799,7 +807,9 @@ export default function App() {
         onHome={backHome}
         onChooseLevel={chooseSelectedLevel}
         onOpenSettings={() => setSettingsOpen(true)}
+        onOpenPrivacy={() => setPrivacyOpen(true)}
       />
+      <PrivacyDialog open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
       <ConfirmDialog
         open={pendingExitRoute !== null}
         title="Leave training?"

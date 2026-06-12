@@ -1,4 +1,4 @@
-import { FaCog, FaHome, FaLayerGroup, FaTimes } from "react-icons/fa";
+import { FaCog, FaHome, FaLayerGroup, FaShieldAlt, FaTimes } from "react-icons/fa";
 import { useModalDismiss } from "../hooks/useModalDismiss";
 
 type MobileMenuDialogProps = {
@@ -8,6 +8,7 @@ type MobileMenuDialogProps = {
   onHome: () => void;
   onChooseLevel: () => void;
   onOpenSettings: () => void;
+  onOpenPrivacy: () => void;
 };
 
 export function MobileMenuDialog({
@@ -17,6 +18,7 @@ export function MobileMenuDialog({
   onHome,
   onChooseLevel,
   onOpenSettings,
+  onOpenPrivacy,
 }: MobileMenuDialogProps) {
   const { handleBackdropClick } = useModalDismiss(open, onClose);
 
@@ -37,6 +39,11 @@ export function MobileMenuDialog({
   function handleSettings(): void {
     onClose();
     onOpenSettings();
+  }
+
+  function handlePrivacy(): void {
+    onClose();
+    onOpenPrivacy();
   }
 
   return (
@@ -70,6 +77,10 @@ export function MobileMenuDialog({
           <button type="button" className="btn-with-icon" onClick={handleSettings}>
             <FaCog aria-hidden="true" />
             Settings
+          </button>
+          <button type="button" className="btn-with-icon" onClick={handlePrivacy}>
+            <FaShieldAlt aria-hidden="true" />
+            Privacy / Datenschutz
           </button>
         </div>
       </section>
